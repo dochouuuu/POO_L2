@@ -117,5 +117,4 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
         return direction;
     }
 
-
 }
