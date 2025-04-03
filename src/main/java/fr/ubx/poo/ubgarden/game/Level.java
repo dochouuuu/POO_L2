@@ -1,11 +1,9 @@
 package fr.ubx.poo.ubgarden.game;
 
-import fr.ubx.poo.ubgarden.game.go.bonus.Carrots;
-import fr.ubx.poo.ubgarden.game.go.bonus.EnergyBoost;
-import fr.ubx.poo.ubgarden.game.go.bonus.Insecticide;
-import fr.ubx.poo.ubgarden.game.go.bonus.PoisonedApple;
+import fr.ubx.poo.ubgarden.game.go.bonus.*;
 import fr.ubx.poo.ubgarden.game.go.decor.*;
 import fr.ubx.poo.ubgarden.game.go.decor.ground.*;
+import fr.ubx.poo.ubgarden.game.go.personage.*;
 import fr.ubx.poo.ubgarden.game.launcher.MapEntity;
 import fr.ubx.poo.ubgarden.game.launcher.MapLevel;
 
@@ -68,8 +66,13 @@ public class Level implements Map {
                         break;
                     }
                     case Hedgehog:
-                        game.getHedgehogPostion();
                         decors.put(position, new Hedgehog(position));
+                        break;
+                    case NestWasp:
+                        decors.put(position, new NestWasp(position));
+                        break;
+                    case NestHornet:
+                        decors.put(position, new NestHornet(position));
                         break;
                     default:
                         throw new RuntimeException("EntityCode " + mapEntity.name() + " not processed");

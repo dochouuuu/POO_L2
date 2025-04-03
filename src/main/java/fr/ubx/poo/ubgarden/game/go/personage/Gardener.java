@@ -66,7 +66,7 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
 
 
     public void requestMove(Direction direction) {
-        if (direction != this.direction) {
+        if (direction != this.direction && direction != null) {
             this.direction = direction;
             setModified(true);
         }
@@ -87,13 +87,25 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
     @Override
     public Position move(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
+
+        if (nextPos.x() < 0 || nextPos.x() >= game.world().getGrid().width() ||
+                nextPos.y() < 0 || nextPos.y() >= game.world().getGrid().height()) {
+            System.out.println("Cannot move: Out of grid bounds!");
+            return getPosition();
+        }
+
         Decor next = game.world().getGrid().get(nextPos);
         setPosition(nextPos);
-        if (next != null)
+
+        if (next != null) {
             next.pickUpBy(this);
-        energy -= next.energyConsumptionWalk() * getDiseaseLevel();
+            energy -= next.energyConsumptionWalk() * getDiseaseLevel();
+        }
+
         return nextPos;
     }
+
+
 
     private long lastMoveTime = 0;
     public void update(long now) {

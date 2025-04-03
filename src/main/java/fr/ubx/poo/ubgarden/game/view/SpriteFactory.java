@@ -5,14 +5,11 @@
 package fr.ubx.poo.ubgarden.game.view;
 
 import fr.ubx.poo.ubgarden.game.go.GameObject;
-import fr.ubx.poo.ubgarden.game.go.bonus.Carrots;
-import fr.ubx.poo.ubgarden.game.go.bonus.EnergyBoost;
-import fr.ubx.poo.ubgarden.game.go.bonus.Insecticide;
-import fr.ubx.poo.ubgarden.game.go.bonus.PoisonedApple;
-import fr.ubx.poo.ubgarden.game.go.decor.Flowers;
-import fr.ubx.poo.ubgarden.game.go.decor.Tree;
-import fr.ubx.poo.ubgarden.game.go.decor.ground.Grass;
-import fr.ubx.poo.ubgarden.game.go.decor.ground.Land;
+import fr.ubx.poo.ubgarden.game.go.bonus.*;
+import fr.ubx.poo.ubgarden.game.go.decor.*;
+import fr.ubx.poo.ubgarden.game.go.decor.ground.*;
+import fr.ubx.poo.ubgarden.game.go.personage.*;
+
 import javafx.scene.layout.Pane;
 
 import static fr.ubx.poo.ubgarden.game.view.ImageResource.*;
@@ -38,6 +35,16 @@ public final class SpriteFactory {
             return new Sprite(layer, factory.get(POISONED_APPLE), gameObject);
         if (gameObject instanceof Carrots)
             return new Sprite(layer, factory.get(CARROTS), gameObject);
+        if (gameObject instanceof Hedgehog)
+            return new Sprite(layer, factory.get(HEDGEHOG), gameObject);
+        if (gameObject instanceof NestWasp)
+            return new Sprite(layer, factory.get(NESTWASP), gameObject);
+        if (gameObject instanceof NestHornet)
+            return new Sprite(layer, factory.get(NESTHORNET), gameObject);
+        if (gameObject instanceof Wasp)
+            return new Sprite(layer, factory.get(WASP_LEFT), gameObject);
+        if (gameObject instanceof Hornet)
+            return new Sprite(layer, factory.get(HORNET_LEFT), gameObject);
         throw new RuntimeException("Unsupported sprite for decor " + gameObject);
     }
 }

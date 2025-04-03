@@ -38,5 +38,8 @@ public abstract class Decor extends GameObject implements Walkable, Pickupable {
         super.update(now);
         if (bonus != null) bonus.update(now);
     }
+    public int energyConsumptionWalk() {
+        return 1;
+    }
 
 }

@@ -11,7 +11,7 @@ public class MapLevelDefaultStart extends MapLevel {
     private final static int width = 18;
     private final static int height = 8;
         private final MapEntity[][] level1 = {
-                {Land, Flowers, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass},
+                {Land, Flowers, NestWasp, NestHornet, Grass, Hedgehog, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass},
                 {Grass, Gardener, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Tree, Grass, Grass, Tree, Tree, Grass, Grass, Grass, Grass},
                 {Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Tree, Grass, Grass, PoisonedApple, Grass},
                 {Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Grass, Tree, Grass, Grass, Insecticide, Grass},
