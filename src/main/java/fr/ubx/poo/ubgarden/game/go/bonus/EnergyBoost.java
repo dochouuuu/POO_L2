@@ -17,5 +17,6 @@ public class EnergyBoost extends Bonus {
     @Override
     public void pickUpBy(Gardener gardener) {
         gardener.pickUp(this);
+        //this.remove();
     }
 }

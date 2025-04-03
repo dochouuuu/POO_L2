@@ -45,6 +45,10 @@ public final class SpriteFactory {
             return new Sprite(layer, factory.get(WASP_LEFT), gameObject);
         if (gameObject instanceof Hornet)
             return new Sprite(layer, factory.get(HORNET_LEFT), gameObject);
+        if (gameObject instanceof DoorOpened)
+            return new Sprite(layer, factory.get(DOOR_OPENED), gameObject);
+        if (gameObject instanceof DoorClosed)
+            return new Sprite(layer, factory.get(DOOR_CLOSED), gameObject);
         throw new RuntimeException("Unsupported sprite for decor " + gameObject);
     }
 }

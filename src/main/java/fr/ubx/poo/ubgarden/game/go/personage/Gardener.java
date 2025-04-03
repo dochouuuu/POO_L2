@@ -44,17 +44,28 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
 
     @Override
     public void pickUp(EnergyBoost energyBoost) {
-        if(energy + 50 > 100){
+        if(energy + 50 >= 100){
             energy = 100;
         } else {
             energy += 50;
         }
+        diseaseLevel = 1;
         System.out.println("I am taking the boost, I should do something ...");
     }
 
     public void pickUp(PoisonedApple poisoned) {
         diseaseLevel++;
+        /*long startTime = System.currentTimeMillis();
+        long endTime = startTime + game.configuration().diseaseDuration();
+
+        while (System.currentTimeMillis() < endTime) {
+            diseaseLevel++;
+            System.out.println("I am sick...");
+        }
+
+        System.out.println("Disease effect ended.");*/
     }
+
 
     public void pickUp(Insecticide insecticide) {
         insecticideCount++;
@@ -88,9 +99,8 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
     public Position move(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
 
-        if (nextPos.x() < 0 || nextPos.x() >= game.world().getGrid().width() ||
-                nextPos.y() < 0 || nextPos.y() >= game.world().getGrid().height()) {
-            System.out.println("Cannot move: Out of grid bounds!");
+        Map map = game.world().getGrid();
+        if (!map.inside(nextPos)){
             return getPosition();
         }
 

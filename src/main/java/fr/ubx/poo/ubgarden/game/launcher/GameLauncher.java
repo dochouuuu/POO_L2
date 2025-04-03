@@ -2,6 +2,7 @@ package fr.ubx.poo.ubgarden.game.launcher;
 
 import fr.ubx.poo.ubgarden.game.*;
 
+
 import java.io.File;
 import java.util.Properties;
 
@@ -49,6 +50,7 @@ public class GameLauncher {
         Configuration configuration = getConfiguration(emptyConfig);
         World world = new World(1);
         Game game = new Game(world, configuration, gardenerPosition);
+        game.setHedgehogPostion(new Position(1,4,0));
         Map level = new Level(game, 1, mapLevel);
         world.put(1, level);
         return game;

@@ -66,13 +66,22 @@ public class Level implements Map {
                         break;
                     }
                     case Hedgehog:
-                        decors.put(position, new Hedgehog(position));
+                        Hedgehog hedgehog = new Hedgehog(position);
+                        decors.put(position, hedgehog);
+                        hedgehog.setPosition(position);
+
                         break;
                     case NestWasp:
                         decors.put(position, new NestWasp(position));
                         break;
                     case NestHornet:
                         decors.put(position, new NestHornet(position));
+                        break;
+                    case DoorNextOpened, DoorPrevOpened:
+                        decors.put(position, new DoorOpened(position));
+                        break;
+                    case DoorNextClosed:
+                        decors.put(position, new DoorClosed(position));
                         break;
                     default:
                         throw new RuntimeException("EntityCode " + mapEntity.name() + " not processed");
@@ -101,6 +110,11 @@ public class Level implements Map {
 
     @Override
     public boolean inside(Position position) {
+        if ((position.x() < 0) || (position.x() >= width()) ||
+                (position.y() < 0) || (position.y() >= height())){
+            System.out.println("Cannot move: Out of grid bounds!");
+            return false;
+        }
         return true;
     }
 
