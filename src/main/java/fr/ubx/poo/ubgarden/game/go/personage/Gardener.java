@@ -8,6 +8,7 @@ import fr.ubx.poo.ubgarden.game.Direction;
 import fr.ubx.poo.ubgarden.game.Game;
 import fr.ubx.poo.ubgarden.game.Map;
 import fr.ubx.poo.ubgarden.game.Position;
+import fr.ubx.poo.ubgarden.game.engine.Timer;
 import fr.ubx.poo.ubgarden.game.go.GameObject;
 import fr.ubx.poo.ubgarden.game.go.Movable;
 import fr.ubx.poo.ubgarden.game.go.PickupVisitor;
@@ -18,6 +19,7 @@ import fr.ubx.poo.ubgarden.game.go.bonus.PoisonedApple;
 import fr.ubx.poo.ubgarden.game.go.decor.Decor;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Gardener extends GameObject implements Movable, PickupVisitor, WalkVisitor {
 
@@ -26,6 +28,8 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
     private boolean moveRequested = false;
     private int diseaseLevel = 1;
     private int insecticideCount = 0;
+    private List<Timer> poisonTimers = new ArrayList<>();
+
 
     public Gardener(Game game, Position position) {
 
@@ -43,18 +47,14 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
     }
 
     @Override
-    public void pickUp(EnergyBoost energyBoost) {
-        if(energy + 50 >= 100){
-            energy = 100;
-        } else {
-            energy += 50;
-        }
+    public void pickUp(EnergyBoost apple) {
+        energy = Math.min(energy + game.configuration().energyBoost(), game.configuration().gardenerEnergy());
         diseaseLevel = 1;
-        System.out.println("I am taking the boost, I should do something ...");
     }
 
     public void pickUp(PoisonedApple poisoned) {
         diseaseLevel++;
+        poisonTimers.add(new Timer(game.configuration().diseaseDuration()));
         /*long startTime = System.currentTimeMillis();
         long endTime = startTime + game.configuration().diseaseDuration();
 
@@ -65,7 +65,6 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
 
         System.out.println("Disease effect ended.");*/
     }
-
 
     public void pickUp(Insecticide insecticide) {
         insecticideCount++;
@@ -108,14 +107,12 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
         setPosition(nextPos);
 
         if (next != null) {
-            next.pickUpBy(this);
             energy -= next.energyConsumptionWalk() * getDiseaseLevel();
+            next.pickUpBy(this);
         }
 
         return nextPos;
     }
-
-
 
     private long lastMoveTime = 0;
     public void update(long now) {
@@ -125,6 +122,19 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
                 lastMoveTime = now;
             }
         }
+        /*else {
+            long inactive = (now - lastMoveTime) / 1_000_000;
+            if (inactive >= game.configuration().energyRecoverDuration()) {
+                if (energy < game.configuration().gardenerEnergy()) {
+                    energy++;
+                    lastMoveTime = now;
+                }
+            }
+        }
+
+        poisonTimers.forEach(t -> t.update(now));
+        poisonTimers.removeIf(t -> !t.isRunning());
+        diseaseLevel = poisonTimers.size();*/
         moveRequested = false;
     }
 
