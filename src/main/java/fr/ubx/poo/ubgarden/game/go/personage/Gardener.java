@@ -122,7 +122,7 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
                 lastMoveTime = now;
             }
         }
-        /*else {
+        else {
             long inactive = (now - lastMoveTime) / 1_000_000;
             if (inactive >= game.configuration().energyRecoverDuration()) {
                 if (energy < game.configuration().gardenerEnergy()) {
@@ -132,11 +132,12 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
             }
         }
 
-        poisonTimers.forEach(t -> t.update(now));
-        poisonTimers.removeIf(t -> !t.isRunning());
-        diseaseLevel = poisonTimers.size();*/
+        poisonTimers.forEach(t -> t.update(now)); // Met à jour les timers de maladie
+        poisonTimers.removeIf(t -> !t.isRunning()); // Supprime ceux qui sont terminés
+
         moveRequested = false;
     }
+
 
     public void hurt(int damage) {
     }
