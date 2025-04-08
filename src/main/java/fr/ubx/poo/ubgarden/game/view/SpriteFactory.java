@@ -37,9 +37,9 @@ public final class SpriteFactory {
             return new Sprite(layer, factory.get(CARROTS), gameObject);
         if (gameObject instanceof Hedgehog)
             return new Sprite(layer, factory.get(HEDGEHOG), gameObject);
-        if (gameObject instanceof NestWasp)
+        if (gameObject instanceof WaspNest)
             return new Sprite(layer, factory.get(NESTWASP), gameObject);
-        if (gameObject instanceof NestHornet)
+        if (gameObject instanceof HornetNest)
             return new Sprite(layer, factory.get(NESTHORNET), gameObject);
         if (gameObject instanceof Wasp)
             return new Sprite(layer, factory.get(WASP_LEFT), gameObject);

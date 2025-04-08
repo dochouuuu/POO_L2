@@ -3,7 +3,6 @@ package fr.ubx.poo.ubgarden.game;
 import fr.ubx.poo.ubgarden.game.go.bonus.*;
 import fr.ubx.poo.ubgarden.game.go.decor.*;
 import fr.ubx.poo.ubgarden.game.go.decor.ground.*;
-import fr.ubx.poo.ubgarden.game.go.personage.*;
 import fr.ubx.poo.ubgarden.game.launcher.MapEntity;
 import fr.ubx.poo.ubgarden.game.launcher.MapLevel;
 
@@ -72,10 +71,10 @@ public class Level implements Map {
 
                         break;
                     case NestWasp:
-                        decors.put(position, new NestWasp(position));
+                        decors.put(position, new WaspNest(position));
                         break;
                     case NestHornet:
-                        decors.put(position, new NestHornet(position));
+                        decors.put(position, new HornetNest(position));
                         break;
                     case DoorNextOpened, DoorPrevOpened:
                         decors.put(position, new DoorOpened(position));
