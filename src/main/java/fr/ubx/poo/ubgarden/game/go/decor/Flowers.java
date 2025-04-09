@@ -10,6 +10,6 @@ public class Flowers extends Decor {
 
     @Override
     public boolean walkableBy(Gardener gardener) {
-        return gardener.canWalkOn(this);
+        return gardener.canWalkOn(this, gardener);
     }
 }
