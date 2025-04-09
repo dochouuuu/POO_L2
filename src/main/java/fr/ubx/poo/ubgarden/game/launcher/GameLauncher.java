@@ -4,6 +4,8 @@ import fr.ubx.poo.ubgarden.game.*;
 
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Properties;
 
 public class GameLauncher {
@@ -38,6 +40,25 @@ public class GameLauncher {
     }
 
     public Game load(File file) {
+        Properties props = new Properties();
+        try (FileInputStream fis = new FileInputStream(file)) {
+            props.load(fis);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load file: " + file, e);
+        }
+
+        /*Configuration configuration = getConfiguration(props);
+        MapRepoFile repo = new MapRepoFile();
+        MapLevel mapLevel = repo.load(file.getName());
+        Position gardenerPosition = mapLevel.getGardenerPosition();
+        if (gardenerPosition == null)
+            throw new RuntimeException("Gardener not found");
+
+        World world = new World(1);
+        Game game = new Game(world, configuration, gardenerPosition);
+        Level level = new Level(game, 1, mapLevel);
+        world.put(1, level);
+        return game; */
         return null;
     }
 

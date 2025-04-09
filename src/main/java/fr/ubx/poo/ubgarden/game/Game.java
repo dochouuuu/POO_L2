@@ -1,5 +1,9 @@
 package fr.ubx.poo.ubgarden.game;
 
+import fr.ubx.poo.ubgarden.game.go.bonus.Carrots;
+import fr.ubx.poo.ubgarden.game.go.decor.Decor;
+import fr.ubx.poo.ubgarden.game.go.decor.DoorClosed;
+import fr.ubx.poo.ubgarden.game.go.decor.DoorOpened;
 import fr.ubx.poo.ubgarden.game.go.personage.Gardener;
 
 
@@ -52,6 +56,25 @@ public class Game {
 
     public void clearSwitchLevel() {
         switchLevelRequested = false;
+    }
+
+    public void openAllDoors() {
+        for (Decor decor : world().getGrid().values()) {
+            if (decor instanceof DoorClosed) {
+                Position p = decor.getPosition();
+                world().getGrid().get(p).remove();
+            }
+        }
+    }
+
+    public int totalCarrots() {
+        int cpt = 0;
+        for (Decor decor : world().getGrid().values()) {
+            if (decor.getBonus() instanceof Carrots) {
+                cpt++;
+            }
+        }
+        return cpt;
     }
 
 }

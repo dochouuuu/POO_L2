@@ -29,7 +29,7 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
     private int diseaseLevel = 1;
     private int insecticideCount = 0;
     private List<Timer> poisonTimers = new ArrayList<>();
-
+    private int carrots = 0;
 
     public Gardener(Game game, Position position) {
 
@@ -73,7 +73,6 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
     public int getEnergy() {
         return this.energy;
     }
-
 
     public void requestMove(Direction direction) {
         if (direction != this.direction && direction != null) {
@@ -150,4 +149,10 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
         return direction;
     }
 
+    public void collectCarrot() {
+        carrots++;
+        if (carrots == game.totalCarrots()) {
+            game.openAllDoors();
+        }
+    }
 }

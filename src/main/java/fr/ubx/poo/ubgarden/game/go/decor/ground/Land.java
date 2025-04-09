@@ -14,4 +14,11 @@ public class Land extends Ground {
         return 2;
     }
 
+    @Override
+    public void pickUpBy(Gardener gardener) {
+        Bonus bonus = getBonus();
+        if (bonus != null) {
+            bonus.pickUpBy(gardener);
+        }
+    }
 }
