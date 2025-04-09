@@ -1,7 +1,9 @@
 package fr.ubx.poo.ubgarden.game.go;
 
 import fr.ubx.poo.ubgarden.game.go.decor.Decor;
+import fr.ubx.poo.ubgarden.game.go.decor.Flowers;
 import fr.ubx.poo.ubgarden.game.go.decor.Tree;
+import fr.ubx.poo.ubgarden.game.go.personage.Gardener;
 
 public interface WalkVisitor {
 
@@ -23,6 +25,13 @@ public interface WalkVisitor {
      */
     default boolean canWalkOn(Tree tree) {
         return false;
+    }
+
+    default boolean canWalkOn(Flowers flowers, GameObject personage){
+        if (personage instanceof Gardener){
+            return false;
+        }
+        return true;
     }
 
     // TODO
