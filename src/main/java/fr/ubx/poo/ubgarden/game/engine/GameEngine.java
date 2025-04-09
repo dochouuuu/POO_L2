@@ -167,7 +167,6 @@
                 for (int j = 0; j < height; j++){
                     if (grid.get(new Position(game.world().currentLevel(), i, j)) instanceof WaspNest) {
                         //if(!timer.isRunning()){
-                            System.out.println("true2");
                             int x = i + (int) (Math.random() * ((height - i) + 1));
                             int y = (j-2) + (int) (Math.random() * ((width - j) + (j-2)));
                             Position pos = new Position(game.world().currentLevel(), x, y);
