@@ -6,6 +6,7 @@
 
     import fr.ubx.poo.ubgarden.game.*;
     import fr.ubx.poo.ubgarden.game.Map;
+    import fr.ubx.poo.ubgarden.game.go.decor.HornetNest;
     import fr.ubx.poo.ubgarden.game.go.decor.WaspNest;
     import fr.ubx.poo.ubgarden.game.go.personage.*;
     import fr.ubx.poo.ubgarden.game.launcher.*;
@@ -28,6 +29,8 @@
         private final Gardener gardener;
         private final List<Sprite> sprites = new LinkedList<>();
         private final Set<Sprite> cleanUpSprites = new HashSet<>();
+        private final List<Wasp> wasps = new LinkedList<>();
+        private final List<Hornet> hornets = new LinkedList<>();
 
         private final Scene scene;
 
@@ -155,40 +158,43 @@
         }
 
         private void update(long now) {
-            game.world().getGrid().values().forEach(decor -> decor.update(now));
-            gardener.update(now);
-
-            int height = game.world().getGrid().height();
-            int width = game.world().getGrid().width();
-            Map grid = game.world().getGrid();
-
-
-            for (int i = 0; i < width; i++){
-                for (int j = 0; j < height; j++){
-                    if (grid.get(new Position(game.world().currentLevel(), i, j)) instanceof WaspNest) {
-                        //if(!timer.isRunning()){
-                            int x = i + (int) (Math.random() * ((height - i) + 1));
-                            int y = (j-2) + (int) (Math.random() * ((width - j) + (j-2)));
-                            Position pos = new Position(game.world().currentLevel(), x, y);
-                            Wasp wasp = new Wasp(game, pos);
-                            wasp.setPosition(pos);
-                            sprites.add(new SpriteWasp(layer, wasp));
-                            wasp.update(now);
-                       // }
-
+            // Mise à jour des décors (comme WaspNest)
+            game.world().getGrid().values().forEach(decor -> {
+                decor.update(now);
+                if (decor instanceof WaspNest) {
+                    WaspNest waspNest = (WaspNest) decor;
+                    Wasp wasp = waspNest.spawnWasp(now, game); // Génère une guêpe si le timer est fini
+                    if (wasp != null) {
+                        wasps.add(wasp); // Ajoute la guêpe à la liste pour la gestion
+                        sprites.add(new SpriteWasp(layer, wasp)); // Ajout du sprite correspondant
                     }
                 }
+                if (decor instanceof HornetNest) {
+                    HornetNest hornetNest = (HornetNest) decor;
+                    Hornet hornet = hornetNest.spawnHornet(now, game); // Génère une guêpe si le timer est fini
+                    if (hornet != null) {
+                        hornets.add(hornet); // Ajoute la guêpe à la liste pour la gestion
+                        sprites.add(new SpriteHornet(layer, hornet)); // Ajout du sprite correspondant
+                    }
+                }
+            });
+            // Mise à jour
+            sprites.forEach(sprite -> sprite.updateImage());
+            wasps.forEach(wasp -> wasp.update(now));
+            hornets.forEach(wasp -> wasp.update(now));
+            gardener.update(now);
 
-            }
-
+            // Vérification des conditions de fin de jeu
             if (gardener.getEnergy() < 0) {
                 gameLoop.stop();
                 showMessage("Perdu!", Color.RED);
-            } else if (gardener.getPosition().equals(game.getHedgehogPostion())){
+            } else if (gardener.getPosition().equals(game.getHedgehogPostion())) {
                 gameLoop.stop();
                 showMessage("Gagné !", Color.GREEN);
             }
         }
+
+
 
         public void cleanupSprites() {
             sprites.forEach(sprite -> {
@@ -199,6 +205,12 @@
             cleanUpSprites.forEach(Sprite::remove);
             sprites.removeAll(cleanUpSprites);
             cleanUpSprites.clear();
+            cleanupInsects();
+        }
+
+        public void cleanupInsects() {
+            wasps.removeIf(Wasp::isDeleted); // Supprime toutes les guêpes marquées comme supprimées
+            hornets.removeIf(Hornet::isDeleted); // Supprime tous les frelons marqués comme supprimés
         }
 
         private void render() {

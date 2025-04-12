@@ -111,7 +111,6 @@ public class Level implements Map {
     public boolean inside(Position position) {
         if ((position.x() < 0) || (position.x() >= width()) ||
                 (position.y() < 0) || (position.y() >= height())){
-            System.out.println("Cannot move: Out of grid bounds!");
             return false;
         }
         return true;
