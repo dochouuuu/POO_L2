@@ -36,6 +36,4 @@ public class MapLevelDefaultStart extends MapLevel {
             for (int j = 0; j < height; j++)
                 set(i, j, level1[j][i]);
     }
-
-
 }

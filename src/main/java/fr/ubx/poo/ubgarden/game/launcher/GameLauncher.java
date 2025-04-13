@@ -47,19 +47,19 @@ public class GameLauncher {
             throw new RuntimeException("Failed to load file: " + file, e);
         }
 
-        /*Configuration configuration = getConfiguration(props);
+        Configuration configuration = getConfiguration(props);
         MapRepoFile repo = new MapRepoFile();
-        MapLevel mapLevel = repo.load(file.getName());
+        MapLevel mapLevel = repo.load(file);
         Position gardenerPosition = mapLevel.getGardenerPosition();
         if (gardenerPosition == null)
             throw new RuntimeException("Gardener not found");
 
         World world = new World(1);
         Game game = new Game(world, configuration, gardenerPosition);
+        game.setHedgehogPostion(new Position(1,0,0));
         Level level = new Level(game, 1, mapLevel);
         world.put(1, level);
-        return game; */
-        return null;
+        return game;
     }
 
     public Game load() {
