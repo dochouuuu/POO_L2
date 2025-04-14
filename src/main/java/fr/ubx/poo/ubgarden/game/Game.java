@@ -16,6 +16,8 @@ public class Game {
     private Position hedgehogPostion;
     private boolean switchLevelRequested = false;
     private int switchLevel;
+    private int totalCarrots = 0;
+
     public Game(World world, Configuration configuration, Position gardenerPosition) {
         this.configuration = configuration;
         this.world = world;
@@ -74,6 +76,14 @@ public class Game {
                 world().getGrid().put(pos, new DoorOpened(pos));
             }
         }
+    }
+
+    public void setTotalCarrots(int totalCarrots) {
+        this.totalCarrots = totalCarrots;
+    }
+
+    public int getTotalCarrots() {
+        return totalCarrots;
     }
 
     public int totalCarrots() {
