@@ -54,16 +54,9 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
 
     public void pickUp(PoisonedApple poisoned) {
         diseaseLevel++;
-        poisonTimers.add(new Timer(game.configuration().diseaseDuration()));
-        /*long startTime = System.currentTimeMillis();
-        long endTime = startTime + game.configuration().diseaseDuration();
-
-        while (System.currentTimeMillis() < endTime) {
-            diseaseLevel++;
-            System.out.println("I am sick...");
-        }
-
-        System.out.println("Disease effect ended.");*/
+        Timer t = new Timer(game.configuration().diseaseDuration());
+        t.start();
+        poisonTimers.add(t);
     }
 
     public void pickUp(Insecticide insecticide) {
@@ -133,7 +126,7 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
 
         poisonTimers.forEach(t -> t.update(now)); // Met à jour les timers de maladie
         poisonTimers.removeIf(t -> !t.isRunning()); // Supprime ceux qui sont terminés
-
+        diseaseLevel = 1 + poisonTimers.size();
         moveRequested = false;
     }
 
