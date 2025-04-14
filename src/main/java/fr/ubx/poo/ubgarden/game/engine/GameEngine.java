@@ -188,7 +188,7 @@
             if (gardener.getEnergy() < 0) {
                 gameLoop.stop();
                 showMessage("Perdu!", Color.RED);
-            } else if (gardener.getPosition().equals(game.getHedgehogPostion())) {
+            } else if (gardener.getPosition().equals(game.getHedgehogPosition())) {
                 gameLoop.stop();
                 showMessage("Gagné !", Color.GREEN);
             }
