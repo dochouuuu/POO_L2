@@ -33,9 +33,7 @@ public class Game {
 
         for (var decor : this.world.getGrid().values()) {
             if (decor instanceof Hedgehog) {
-                System.out.println("true");
                 this.hedgehogPostion = new Position (world.currentLevel(), decor.getPosition().x(), decor.getPosition().y());
-                System.out.println(this.hedgehogPostion.x() + this.hedgehogPostion.y());
             }
         }
     }
