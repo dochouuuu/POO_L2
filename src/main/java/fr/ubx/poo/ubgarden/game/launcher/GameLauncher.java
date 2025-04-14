@@ -1,6 +1,8 @@
 package fr.ubx.poo.ubgarden.game.launcher;
 
 import fr.ubx.poo.ubgarden.game.*;
+import fr.ubx.poo.ubgarden.game.go.decor.Decor;
+import fr.ubx.poo.ubgarden.game.go.decor.Hedgehog;
 
 
 import java.io.File;
@@ -56,7 +58,9 @@ public class GameLauncher {
 
         World world = new World(1);
         Game game = new Game(world, configuration, gardenerPosition);
-        game.setHedgehogPostion(new Position(1,0,0));
+
+        game.setHedgehogPosition();
+
         Level level = new Level(game, 1, mapLevel);
         world.put(1, level);
         return game;
@@ -71,14 +75,16 @@ public class GameLauncher {
         Configuration configuration = getConfiguration(emptyConfig);
         World world = new World(1);
         Game game = new Game(world, configuration, gardenerPosition);
-        game.setHedgehogPostion(new Position(1,4,0));
         Map level = new Level(game, 1, mapLevel);
         world.put(1, level);
+        game.setHedgehogPosition();
         return game;
     }
 
     private static class LoadSingleton {
         static final GameLauncher INSTANCE = new GameLauncher();
     }
+
+
 
 }

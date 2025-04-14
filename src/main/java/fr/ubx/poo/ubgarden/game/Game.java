@@ -4,6 +4,7 @@ import fr.ubx.poo.ubgarden.game.go.bonus.Carrots;
 import fr.ubx.poo.ubgarden.game.go.decor.Decor;
 import fr.ubx.poo.ubgarden.game.go.decor.DoorClosed;
 import fr.ubx.poo.ubgarden.game.go.decor.DoorOpened;
+import fr.ubx.poo.ubgarden.game.go.decor.Hedgehog;
 import fr.ubx.poo.ubgarden.game.go.personage.Gardener;
 
 
@@ -21,13 +22,26 @@ public class Game {
         gardener = new Gardener(this, gardenerPosition);
     }
 
-    public Position getHedgehogPostion(){
+    public Position getHedgehogPosition(){
         return hedgehogPostion;
     }
 
-    public void setHedgehogPostion(Position position){
-        this.hedgehogPostion = position;
+    public void setHedgehogPosition() {
+        if (this.world == null || this.world.getGrid() == null) {
+            return;
+        }
+
+        for (var decor : this.world.getGrid().values()) {
+            if (decor instanceof Hedgehog) {
+                System.out.println("true");
+                this.hedgehogPostion = new Position (world.currentLevel(), decor.getPosition().x(), decor.getPosition().y());
+                System.out.println(this.hedgehogPostion.x() + this.hedgehogPostion.y());
+            }
+        }
     }
+
+
+
 
     public Configuration configuration() {
         return configuration;
