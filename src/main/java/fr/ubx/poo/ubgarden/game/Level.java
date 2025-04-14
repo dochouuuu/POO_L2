@@ -106,7 +106,6 @@ public class Level implements Map {
         return decors.values();
     }
 
-
     @Override
     public boolean inside(Position position) {
         if ((position.x() < 0) || (position.x() >= width()) ||
@@ -116,5 +115,9 @@ public class Level implements Map {
         return true;
     }
 
+    @Override
+    public void put(Position position, Decor decor) {
+        decors.put(position, decor);
+    }
 
 }

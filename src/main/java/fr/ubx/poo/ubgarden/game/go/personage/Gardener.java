@@ -152,7 +152,7 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
     public void collectCarrot() {
         carrots++;
         if (carrots == game.totalCarrots()) {
-            game.openAllDoors();
+            game.openDoors();
         }
     }
 }

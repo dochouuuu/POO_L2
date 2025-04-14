@@ -38,9 +38,6 @@ public class Game {
         }
     }
 
-
-
-
     public Configuration configuration() {
         return configuration;
     }
@@ -70,11 +67,11 @@ public class Game {
         switchLevelRequested = false;
     }
 
-    public void openAllDoors() {
+    public void openDoors() {
         for (Decor decor : world().getGrid().values()) {
             if (decor instanceof DoorClosed) {
-                Position p = decor.getPosition();
-                world().getGrid().get(p).remove();
+                Position pos = decor.getPosition();
+                world().getGrid().put(pos, new DoorOpened(pos));
             }
         }
     }
@@ -82,7 +79,7 @@ public class Game {
     public int totalCarrots() {
         int cpt = 0;
         for (Decor decor : world().getGrid().values()) {
-            if (decor.getBonus() instanceof Carrots) {
+            if (decor != null && decor.getBonus() instanceof Carrots) {
                 cpt++;
             }
         }
