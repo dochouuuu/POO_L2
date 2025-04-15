@@ -115,6 +115,16 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
                 lastMoveTime = now;
             }
         }
+        Decor decor = game.world().getGrid().get(this.getPosition());
+        if (decor instanceof fr.ubx.poo.ubgarden.game.go.decor.DoorOpened) {
+            int current = game.world().currentLevel();
+            int next = current + 1;
+
+            if (next <= game.world().maxLevel()) {
+                game.requestSwitchLevel(next);
+                System.out.println("🔁 Passage au niveau " + next);
+            }
+        }
         else {
             long inactive = (now - lastMoveTime) / 1_000_000;
             if (inactive >= game.configuration().energyRecoverDuration()) {
@@ -130,7 +140,6 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
         diseaseLevel = 1 + poisonTimers.size();
         moveRequested = false;
     }
-
 
     public void hurt(int damage) {
         this.energy -= damage;

@@ -1,6 +1,8 @@
 package fr.ubx.poo.ubgarden.game.launcher;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 public class MapRepoFile implements MapRepo {
@@ -11,26 +13,11 @@ public class MapRepoFile implements MapRepo {
     }
 
     public MapLevel load(File file) {
-        try (FileInputStream fis = new FileInputStream(file)) {
-            Properties props = new Properties();
-            props.load(fis);
-
-            int levels = Integer.parseInt(props.getProperty("levels", "1"));
-            boolean compressed = Boolean.parseBoolean(props.getProperty("compression", "false"));
-            String mapData = props.getProperty("level1"); // Juste le 1er niveau pour l'instant
-
-            if (mapData == null) {
-                throw new MapException("Missing 'level1' data");
-            }
-
-            if (compressed) {
-                mapData = decompress(mapData);
-            }
-
-            return loadFromString(mapData);
-        } catch (IOException e) {
-            throw new MapException("Cannot load map from file: " + file.getName());
+        Map<Integer, MapLevel> allLevels = loadAllLevels(file);
+        if (!allLevels.containsKey(1)) {
+            throw new MapException("Missing level1 data");
         }
+        return allLevels.get(1);
     }
 
     public MapLevel loadFromString(String mapString) {
@@ -66,7 +53,9 @@ public class MapRepoFile implements MapRepo {
                 cpt = cpt * 10 + (c - '0');
             } else {
                 if (cpt > 0) {
-                    result.append(String.valueOf(prev).repeat(cpt - 1)); // prev déjà ajouté avant
+                    for (int i = 1; i < cpt; i++) {
+                        result.append(prev);
+                    }
                     cpt = 0;
                 }
                 result.append(c);
@@ -75,9 +64,43 @@ public class MapRepoFile implements MapRepo {
         }
 
         if (cpt > 0) {
-            result.append(String.valueOf(prev).repeat(cpt - 1));
+            for (int i = 1; i < cpt; i++) {
+                result.append(prev);
+            }
         }
 
         return result.toString();
+    }
+
+    public Map<Integer, MapLevel> loadAllLevels(File file) {
+        try (FileInputStream fis = new FileInputStream(file)) {
+            Properties props = new Properties();
+            props.load(fis);
+
+            int levels = Integer.parseInt(props.getProperty("levels", "1"));
+            boolean compressed = Boolean.parseBoolean(props.getProperty("compression", "false"));
+
+            Map<Integer, MapLevel> allLevels = new HashMap<>();
+
+            for (int i = 1; i <= levels; i++) {
+                String key = "level" + i;
+                String mapData = props.getProperty(key);
+
+                if (mapData == null) {
+                    throw new MapException("Missing data for " + key);
+                }
+
+                if (compressed) {
+                    mapData = decompress(mapData);
+                }
+
+                MapLevel level = loadFromString(mapData);
+                allLevels.put(i, level);
+            }
+
+            return allLevels;
+        } catch (IOException e) {
+            throw new MapException("Cannot load map from file: " + file.getName());
+        }
     }
 }

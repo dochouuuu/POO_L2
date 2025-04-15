@@ -109,12 +109,32 @@
 
         private void checkLevel() {
             if (game.isSwitchLevelRequested()) {
-                // Find the new level to switch to
-                // clear all sprites
-                // change the current level
-                // Find the position of the door to reach
-                // Set the position of the gardener
-                // initialize();
+                int newLevel = game.getSwitchLevel();
+
+                // Change le niveau courant
+                game.world().setCurrentLevel(newLevel);
+
+                // Repositionne le jardinier à une position par défaut (ex: (0,0))
+                game.getGardener().setPosition(new Position(newLevel, 0, 0));
+
+                // Nettoie les anciens sprites et recharge ceux du nouveau niveau
+                sprites.clear();
+                layer.getChildren().clear();
+
+                for (var decor : game.world().getGrid().values()) {
+                    sprites.add(SpriteFactory.create(layer, decor));
+                    decor.setModified(true);
+                    var bonus = decor.getBonus();
+                    if (bonus != null) {
+                        sprites.add(SpriteFactory.create(layer, bonus));
+                        bonus.setModified(true);
+                    }
+                }
+
+                // Ajoute le sprite du jardinier
+                sprites.add(new SpriteGardener(layer, game.getGardener()));
+
+                game.clearSwitchLevel();
             }
         }
 

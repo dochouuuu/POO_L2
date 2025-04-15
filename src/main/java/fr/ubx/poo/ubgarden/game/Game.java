@@ -29,13 +29,15 @@ public class Game {
     }
 
     public void setHedgehogPosition() {
-        if (this.world == null || this.world.getGrid() == null) {
-            return;
-        }
+        if (this.world == null) return;
 
-        for (var decor : this.world.getGrid().values()) {
-            if (decor instanceof Hedgehog) {
-                this.hedgehogPostion = new Position (world.currentLevel(), decor.getPosition().x(), decor.getPosition().y());
+        for (int level = 1; level <= world.maxLevel(); level++) {
+            Map map = world.getGrid(level);
+            for (Decor decor : map.values()) {
+                if (decor instanceof Hedgehog) {
+                    this.hedgehogPostion = new Position(level, decor.getPosition().x(), decor.getPosition().y());
+                    return; // stop dès qu'on trouve
+                }
             }
         }
     }

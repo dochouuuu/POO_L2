@@ -25,14 +25,17 @@ public class StatusBar {
     private final Text diseaseLevel = new Text();
 
     private final Text insecticideNumber = new Text();
-    private final int gameLevel = 1;
+    private int currentLevel = -1;
+
     private final DropShadow ds = new DropShadow();
 
 
     public StatusBar(Group root, int sceneWidth, int sceneHeight) {
         // Status bar
         level.getStyleClass().add("level");
-        level.getChildren().add(new ImageView(ImageResourceFactory.getInstance().getDigit(gameLevel)));
+        currentLevel = 1; // ou = game.world().currentLevel() si tu le passes ici
+        level.getChildren().add(new ImageView(ImageResourceFactory.getInstance().getDigit(currentLevel)));
+
 
         ds.setRadius(5.0);
         ds.setOffsetX(3.0);
@@ -57,12 +60,12 @@ public class StatusBar {
         root.getChildren().add(hBox);
     }
 
-    private void updateLevel(int n) {
+    /*private void updateLevel(int n) {
         if (n != gameLevel) {
             level.getChildren().clear();
             level.getChildren().add(new ImageView(ImageResourceFactory.getInstance().getDigit(n)));
         }
-    }
+    }*/
 
     private HBox statusGroup(Image kind, Text number) {
         HBox group = new HBox();
@@ -81,5 +84,12 @@ public class StatusBar {
         insecticideNumber.setText(Integer.toString(g.getInsecticideCount()));
         diseaseLevel.setText("x" + g.getDiseaseLevel());
         energy.setText(Integer.toString(g.getEnergy()));
+        int levelNum = game.world().currentLevel();
+        if (levelNum != currentLevel) {
+            currentLevel = levelNum;
+            level.getChildren().clear();
+            level.getChildren().add(new ImageView(ImageResourceFactory.getInstance().getDigit(levelNum)));
+        }
+
     }
 }

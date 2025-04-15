@@ -6,11 +6,12 @@ import java.util.HashMap;
 public class World {
     private final java.util.Map<Integer, Map> grids = new HashMap<>();
     private int currentLevel = 1;
+    private final int levels;
 
     public World(int levels) {
         if (levels < 1) throw new IllegalArgumentException("Levels must be greater than 1");
+        this.levels = levels;
     }
-
 
     public int currentLevel() {
         return currentLevel;
@@ -30,6 +31,10 @@ public class World {
 
     public void put(int level, Map grid) {
         this.grids.put(level, grid);
+    }
+
+    public int maxLevel() {
+        return levels;
     }
 
 }
