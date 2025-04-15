@@ -99,7 +99,8 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
         setPosition(nextPos);
 
         if (next != null) {
-            energy -= next.energyConsumptionWalk() * getDiseaseLevel();
+            int cost = next.energyConsumptionWalk() * getDiseaseLevel();
+            hurt(cost);
             next.pickUpBy(this);
         }
 
@@ -132,6 +133,7 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
 
 
     public void hurt(int damage) {
+        this.energy -= damage;
     }
 
     public void hurt() {
