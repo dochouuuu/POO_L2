@@ -6,8 +6,8 @@
 
     import fr.ubx.poo.ubgarden.game.*;
     import fr.ubx.poo.ubgarden.game.Map;
-    import fr.ubx.poo.ubgarden.game.go.decor.HornetNest;
-    import fr.ubx.poo.ubgarden.game.go.decor.WaspNest;
+    import fr.ubx.poo.ubgarden.game.go.GameObject;
+    import fr.ubx.poo.ubgarden.game.go.decor.*;
     import fr.ubx.poo.ubgarden.game.go.personage.*;
     import fr.ubx.poo.ubgarden.game.launcher.*;
     import fr.ubx.poo.ubgarden.game.view.*;
@@ -169,6 +169,7 @@
                         sprites.add(new SpriteWasp(layer, wasp)); // Ajout du sprite correspondant
                     }
                 }
+
                 if (decor instanceof HornetNest) {
                     HornetNest hornetNest = (HornetNest) decor;
                     Hornet hornet = hornetNest.spawnHornet(now, game); // Génère une guêpe si le timer est fini
@@ -177,7 +178,15 @@
                         sprites.add(new SpriteHornet(layer, hornet)); // Ajout du sprite correspondant
                     }
                 }
+
+                if (decor instanceof DoorClosed && game.totalCarrots() == game.getTotalCarrots()) {
+                    Position pos = decor.getPosition();
+                    DoorOpened opened = new DoorOpened(pos);
+                    opened.setModified(true);
+                    game.world().getGrid().put(pos, opened);
+                }
             });
+
             // Mise à jour
             sprites.forEach(sprite -> sprite.updateImage());
             wasps.forEach(wasp -> wasp.update(now));
@@ -193,7 +202,6 @@
                 showMessage("Gagné !", Color.GREEN);
             }
         }
-
 
 
         public void cleanupSprites() {

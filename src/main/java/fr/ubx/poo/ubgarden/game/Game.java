@@ -73,7 +73,10 @@ public class Game {
         for (Decor decor : world().getGrid().values()) {
             if (decor instanceof DoorClosed) {
                 Position pos = decor.getPosition();
-                world().getGrid().put(pos, new DoorOpened(pos));
+                DoorOpened opened = new DoorOpened(pos);
+                world().getGrid().put(pos, opened);
+                opened.setModified(true);
+                System.out.println("🚪 Porte ouverte à " + pos);
             }
         }
     }
