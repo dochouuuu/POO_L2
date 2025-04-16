@@ -5,11 +5,8 @@
     package fr.ubx.poo.ubgarden.game.engine;
 
     import fr.ubx.poo.ubgarden.game.*;
-    import fr.ubx.poo.ubgarden.game.Map;
-    import fr.ubx.poo.ubgarden.game.go.GameObject;
     import fr.ubx.poo.ubgarden.game.go.decor.*;
     import fr.ubx.poo.ubgarden.game.go.personage.*;
-    import fr.ubx.poo.ubgarden.game.launcher.*;
     import fr.ubx.poo.ubgarden.game.view.*;
     import javafx.animation.AnimationTimer;
     import javafx.application.Platform;
@@ -17,7 +14,6 @@
     import javafx.scene.layout.*;
     import javafx.scene.paint.Color;
     import javafx.scene.text.*;
-    import java.util.Random;
 
     import java.util.*;
 
@@ -199,11 +195,9 @@
                     }
                 }
 
-                if (decor instanceof DoorClosed && game.totalCarrots() == game.getTotalCarrots()) {
-                    Position pos = decor.getPosition();
-                    DoorOpened opened = new DoorOpened(pos);
-                    opened.setModified(true);
-                    game.world().getGrid().put(pos, opened);
+                if (decor instanceof Door && !(((Door) decor).getIsOpen()) && game.totalCarrots() == 0) {
+                    ((Door) decor).setIsOpen(true);
+                    ((Door) decor).openDoors(game, decor);
                 }
             });
 

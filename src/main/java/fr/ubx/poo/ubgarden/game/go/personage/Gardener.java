@@ -17,6 +17,7 @@ import fr.ubx.poo.ubgarden.game.go.bonus.EnergyBoost;
 import fr.ubx.poo.ubgarden.game.go.bonus.Insecticide;
 import fr.ubx.poo.ubgarden.game.go.bonus.PoisonedApple;
 import fr.ubx.poo.ubgarden.game.go.decor.Decor;
+import fr.ubx.poo.ubgarden.game.go.decor.Door;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,7 +117,7 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
             }
         }
         Decor decor = game.world().getGrid().get(this.getPosition());
-        if (decor instanceof fr.ubx.poo.ubgarden.game.go.decor.DoorOpened) {
+        if (decor instanceof Door) {
             int current = game.world().currentLevel();
             int next = current + 1;
 
@@ -154,9 +155,10 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
     }
 
     public void collectCarrot() {
-        carrots++;
-        if (carrots == game.getTotalCarrots()) {
-            game.openDoors();
-        }
+        this.carrots++;
+    }
+
+    public int getNumbersOfCarrots(){
+        return this.carrots;
     }
 }

@@ -68,7 +68,6 @@ public class Level implements Map {
                         Hedgehog hedgehog = new Hedgehog(position);
                         decors.put(position, hedgehog);
                         hedgehog.setPosition(position);
-
                         break;
                     case NestWasp:
                         decors.put(position, new WaspNest(position));
@@ -76,12 +75,16 @@ public class Level implements Map {
                     case NestHornet:
                         decors.put(position, new HornetNest(position));
                         break;
-                    case DoorNextOpened, DoorPrevOpened:
-                        decors.put(position, new DoorOpened(position));
+                    case DoorNextOpened, DoorPrevOpened: {
+                        Door door = new Door(position, true);
+                        decors.put(position, door);
                         break;
-                    case DoorNextClosed:
-                        decors.put(position, new DoorClosed(position));
+                    }
+                    case DoorNextClosed: {
+                        Door door1 = new Door(position);
+                        decors.put(position, door1);
                         break;
+                    }
                     default:
                         throw new RuntimeException("EntityCode " + mapEntity.name() + " not processed");
                 }

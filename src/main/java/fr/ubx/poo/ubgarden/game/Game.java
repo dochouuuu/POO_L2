@@ -2,8 +2,7 @@ package fr.ubx.poo.ubgarden.game;
 
 import fr.ubx.poo.ubgarden.game.go.bonus.Carrots;
 import fr.ubx.poo.ubgarden.game.go.decor.Decor;
-import fr.ubx.poo.ubgarden.game.go.decor.DoorClosed;
-import fr.ubx.poo.ubgarden.game.go.decor.DoorOpened;
+import fr.ubx.poo.ubgarden.game.go.decor.Door;
 import fr.ubx.poo.ubgarden.game.go.decor.Hedgehog;
 import fr.ubx.poo.ubgarden.game.go.personage.Gardener;
 
@@ -71,24 +70,8 @@ public class Game {
         switchLevelRequested = false;
     }
 
-    public void openDoors() {
-        for (Decor decor : world().getGrid().values()) {
-            if (decor instanceof DoorClosed) {
-                Position pos = decor.getPosition();
-                DoorOpened opened = new DoorOpened(pos);
-                world().getGrid().put(pos, opened);
-                opened.setModified(true);
-                System.out.println("🚪 Porte ouverte à " + pos);
-            }
-        }
-    }
-
     public void setTotalCarrots(int totalCarrots) {
         this.totalCarrots = totalCarrots;
-    }
-
-    public int getTotalCarrots() {
-        return totalCarrots;
     }
 
     public int totalCarrots() {
@@ -98,6 +81,7 @@ public class Game {
                 cpt++;
             }
         }
+        this.setTotalCarrots(cpt);
         return cpt;
     }
 
