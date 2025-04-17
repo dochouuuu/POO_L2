@@ -29,19 +29,16 @@ public class StatusBar {
 
     private final DropShadow ds = new DropShadow();
 
-
     public StatusBar(Group root, int sceneWidth, int sceneHeight) {
         // Status bar
         level.getStyleClass().add("level");
         currentLevel = 1; // ou = game.world().currentLevel() si tu le passes ici
         level.getChildren().add(new ImageView(ImageResourceFactory.getInstance().getDigit(currentLevel)));
 
-
         ds.setRadius(5.0);
         ds.setOffsetX(3.0);
         ds.setOffsetY(3.0);
         ds.setColor(Color.color(0.5f, 0.5f, 0.5f));
-
 
         HBox status = new HBox();
         status.getStyleClass().add("status");
@@ -59,13 +56,6 @@ public class StatusBar {
         hBox.setPrefSize(sceneWidth, height);
         root.getChildren().add(hBox);
     }
-
-    /*private void updateLevel(int n) {
-        if (n != gameLevel) {
-            level.getChildren().clear();
-            level.getChildren().add(new ImageView(ImageResourceFactory.getInstance().getDigit(n)));
-        }
-    }*/
 
     private HBox statusGroup(Image kind, Text number) {
         HBox group = new HBox();
@@ -90,6 +80,5 @@ public class StatusBar {
             level.getChildren().clear();
             level.getChildren().add(new ImageView(ImageResourceFactory.getInstance().getDigit(levelNum)));
         }
-
     }
 }

@@ -87,8 +87,6 @@ public class GameLauncherView extends BorderPane {
         exitItem.setOnAction(e -> System.exit(0));
 
     }
-
-
     private void resizeStage() {
         stage.sizeToScene();
         stage.hide();

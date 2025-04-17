@@ -1,9 +1,7 @@
 package fr.ubx.poo.ubgarden.game;
 
 import fr.ubx.poo.ubgarden.game.go.bonus.Carrots;
-import fr.ubx.poo.ubgarden.game.go.decor.Decor;
-import fr.ubx.poo.ubgarden.game.go.decor.Door;
-import fr.ubx.poo.ubgarden.game.go.decor.Hedgehog;
+import fr.ubx.poo.ubgarden.game.go.decor.*;
 import fr.ubx.poo.ubgarden.game.go.personage.Gardener;
 
 
@@ -84,5 +82,4 @@ public class Game {
         this.setTotalCarrots(cpt);
         return cpt;
     }
-
 }

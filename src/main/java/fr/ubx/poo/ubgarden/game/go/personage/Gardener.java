@@ -123,7 +123,7 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
 
             if (next <= game.world().maxLevel()) {
                 game.requestSwitchLevel(next);
-                System.out.println("🔁 Passage au niveau " + next);
+                System.out.println("Passage au niveau " + next);
             }
         }
         else {
@@ -156,9 +156,5 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
 
     public void collectCarrot() {
         this.carrots++;
-    }
-
-    public int getNumbersOfCarrots(){
-        return this.carrots;
     }
 }

@@ -1,12 +1,8 @@
 package fr.ubx.poo.ubgarden.game.go.decor;
 
-import fr.ubx.poo.ubgarden.game.Direction;
 import fr.ubx.poo.ubgarden.game.Game;
 import fr.ubx.poo.ubgarden.game.Position;
-import fr.ubx.poo.ubgarden.game.go.bonus.Carrots;
 import fr.ubx.poo.ubgarden.game.go.personage.Gardener;
-import fr.ubx.poo.ubgarden.game.view.ImageResourceFactory;
-import javafx.scene.image.Image;
 
 public class Door extends Decor {
     private boolean isOpen;
@@ -35,18 +31,14 @@ public class Door extends Decor {
 
     public void openDoors(Game game, Decor decor) {
         Position pos = decor.getPosition();
-        Door opened = new Door(pos, true);
+        Door openedDoor = new Door(pos, true);
 
-        for (Decor decor1 : game.world().getGrid().values()) {
-            if (decor1 != null && decor1.getPosition().equals(pos)) {
-                decor1.remove();
-            }
-        }
-        game.world().getGrid().put(pos, opened);
-        //game.world().getGrid().values().add(opened);
-        System.out.println(game.world().getGrid().values());
-        opened.setModified(true);
-        System.out.println("🚪 Porte ouverte à " + pos.x() + ";" + pos.y());
+        // Remplace dans la grille
+        game.world().getGrid().put(pos, openedDoor);
 
+        // Signale que la porte doit être redessinée
+        openedDoor.setModified(true);
+
+        System.out.println("Porte ouverte à (" + pos.x() + ", " + pos.y() + ")");
     }
 }

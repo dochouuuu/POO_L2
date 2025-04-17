@@ -9,8 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.Map;
-import java.util.HashMap;
+import fr.ubx.poo.ubgarden.game.Map;
 
 
 public class GameLauncher {
@@ -54,24 +53,40 @@ public class GameLauncher {
 
         Configuration configuration = getConfiguration(props);
 
-        MapRepoFile repo = new MapRepoFile();
-        Map<Integer, MapLevel> allLevels = repo.loadAllLevels(file);
+        // Lire les niveaux depuis le fichier
+        int levels = Integer.parseInt(props.getProperty("levels", "1"));
+        boolean compressed = Boolean.parseBoolean(props.getProperty("compression", "false"));
+        java.util.Map<Integer, MapLevel> allLevels = new java.util.HashMap<>();
 
-        // Trouve le jardinier dans le niveau 1
+        for (int i = 1; i <= levels; i++) {
+            String key = "level" + i;
+            String mapData = props.getProperty(key);
+            if (mapData == null)
+                throw new RuntimeException("Missing data for level " + i);
+            if (compressed)
+                mapData = decompress(mapData);
+            allLevels.put(i, loadFromString(mapData));
+        }
+
+        // Trouver la position du jardinier dans le niveau 1
         Position gardenerPosition = allLevels.get(1).getGardenerPosition();
+        if (gardenerPosition == null)
+            throw new RuntimeException("Gardener not found");
 
-        // Crée un monde avec plusieurs niveaux
-        World world = new World(allLevels.size());
+        // Créer le monde
+        World world = new World(levels);
         Game game = new Game(world, configuration, gardenerPosition);
 
-        // Ajoute tous les niveaux dans le monde
-        for (int i = 1; i <= allLevels.size(); i++) {
-            Level level = new Level(game, i, allLevels.get(i));
+        // Créer chaque niveau
+        for (int i = 1; i <= levels; i++) {
+            MapLevel mapLevel = allLevels.get(i);
+            Map level = new Level(game, i, mapLevel);
             world.put(i, level);
         }
 
         game.setTotalCarrots(game.totalCarrots());
         game.setHedgehogPosition();
+
         return game;
     }
 
@@ -84,7 +99,7 @@ public class GameLauncher {
         Configuration configuration = getConfiguration(emptyConfig);
         World world = new World(1);
         Game game = new Game(world, configuration, gardenerPosition);
-        Level level = new Level(game, 1, mapLevel);
+        Map level = new Level(game, 1, mapLevel);
         world.put(1, level);
         game.setTotalCarrots(game.totalCarrots());
         game.setHedgehogPosition();
@@ -95,6 +110,55 @@ public class GameLauncher {
         static final GameLauncher INSTANCE = new GameLauncher();
     }
 
+    private MapLevel loadFromString(String mapString) {
+        String[] lines = mapString.trim().split("x");
+        int height = lines.length;
+        int width = lines[0].length();
 
+        MapLevel level = new MapLevel(width, height);
 
+        for (int y = 0; y < height; y++) {
+            String row = lines[y];
+            if (row.length() != width) {
+                throw new RuntimeException("Line " + (y + 1) + " has incorrect width");
+            }
+
+            for (int x = 0; x < width; x++) {
+                char code = row.charAt(x);
+                MapEntity entity = MapEntity.fromCode(code);
+                level.set(x, y, entity);
+            }
+        }
+
+        return level;
+    }
+
+    private String decompress(String data) {
+        StringBuilder result = new StringBuilder();
+        char prev = 0;
+        int cpt = 0;
+
+        for (char c : data.toCharArray()) {
+            if (Character.isDigit(c)) {
+                cpt = cpt * 10 + (c - '0');
+            } else {
+                if (cpt > 0) {
+                    for (int i = 1; i < cpt; i++) {
+                        result.append(prev);
+                    }
+                    cpt = 0;
+                }
+                result.append(c);
+                prev = c;
+            }
+        }
+
+        if (cpt > 0) {
+            for (int i = 1; i < cpt; i++) {
+                result.append(prev);
+            }
+        }
+
+        return result.toString();
+    }
 }
