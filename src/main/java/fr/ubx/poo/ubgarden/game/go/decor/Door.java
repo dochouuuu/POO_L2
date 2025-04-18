@@ -29,15 +29,11 @@ public class Door extends Decor {
         return this.isOpen;
     }
 
-    public void openDoors(Game game, Decor decor) {
-        Position pos = decor.getPosition();
-        Door openedDoor = new Door(pos, true);
-
-        // Remplace dans la grille
-        game.world().getGrid().put(pos, openedDoor);
-
-        // Signale que la porte doit être redessinée
-        openedDoor.setModified(true);
+    public void open(Game game) {
+        Position pos = this.getPosition();
+        Door opened = new Door(pos, true);
+        game.world().getGrid().put(pos, opened);
+        opened.setModified(true);
 
         System.out.println("Porte ouverte à (" + pos.x() + ", " + pos.y() + ")");
     }

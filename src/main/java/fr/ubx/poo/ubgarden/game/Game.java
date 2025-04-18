@@ -72,14 +72,26 @@ public class Game {
         this.totalCarrots = totalCarrots;
     }
 
-    public int totalCarrots() {
+    public int getTotalCarrots() {
+        return this.totalCarrots;
+    }
+
+    public int calculeTotalCarrots() {
         int cpt = 0;
         for (Decor decor : world().getGrid().values()) {
             if (decor != null && decor.getBonus() instanceof Carrots) {
                 cpt++;
             }
         }
-        this.setTotalCarrots(cpt);
         return cpt;
+    }
+
+
+    public void openDoors() {
+        for (Decor decor : world().getGrid().values()) {
+            if (decor instanceof Door door && !door.getIsOpen()) {
+                door.open(this);
+            }
+        }
     }
 }

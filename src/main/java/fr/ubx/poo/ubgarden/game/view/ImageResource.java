@@ -1,5 +1,7 @@
 package fr.ubx.poo.ubgarden.game.view;
 
+import javafx.scene.image.Image;
+
 public enum ImageResource {
     // Decor elements
     GRASS("grass.jpg"), LAND("land.jpg"), CARROTS("carrots.png"), FLOWERS("flowers.jpg"),
@@ -43,5 +45,8 @@ public enum ImageResource {
         return fileName;
     }
 
+    public Image load() {
+        return new Image("/images/" + fileName);
+    }
 }
 

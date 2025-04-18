@@ -84,7 +84,7 @@ public class GameLauncher {
             world.put(i, level);
         }
 
-        game.setTotalCarrots(game.totalCarrots());
+        game.setTotalCarrots(game.calculeTotalCarrots());
         game.setHedgehogPosition();
 
         return game;
@@ -101,7 +101,7 @@ public class GameLauncher {
         Game game = new Game(world, configuration, gardenerPosition);
         Map level = new Level(game, 1, mapLevel);
         world.put(1, level);
-        game.setTotalCarrots(game.totalCarrots());
+        game.setTotalCarrots(game.calculeTotalCarrots());
         game.setHedgehogPosition();
         return game;
     }

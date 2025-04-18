@@ -6,6 +6,7 @@ package fr.ubx.poo.ubgarden.game.view;
 
 import fr.ubx.poo.ubgarden.game.Position;
 import fr.ubx.poo.ubgarden.game.go.GameObject;
+import fr.ubx.poo.ubgarden.game.go.decor.Door;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -42,6 +43,13 @@ public class Sprite {
     }
 
     public void updateImage() {
+        if (gameObject instanceof Door door) {
+            if (door.getIsOpen()) {
+                setImage(ImageResource.DOOR_OPENED.load());
+            } else {
+                setImage(ImageResource.DOOR_CLOSED.load());
+            }
+        }
     }
 
     public Position getPosition() {

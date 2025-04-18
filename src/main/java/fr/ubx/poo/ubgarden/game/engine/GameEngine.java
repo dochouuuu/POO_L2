@@ -82,7 +82,7 @@ import java.util.*;
         resizeScene(sceneWidth, sceneHeight);
         }
 
-        void buildAndSetGameLoop() {
+    void buildAndSetGameLoop() {
         gameLoop = new AnimationTimer() {
             public void handle(long now) {
                 checkLevel();
@@ -110,11 +110,15 @@ import java.util.*;
             game.world().setCurrentLevel(newLevel);
 
             // Repositionne le jardinier
-            game.getGardener().setPosition(new Position(newLevel, 0, 0));
+            game.getGardener().setPosition(new Position(newLevel, 1, 0));
+            game.getGardener().setModified(true);
+
+            // Recalcule le nombre de carottes pour ce niveau
+            game.setTotalCarrots(game.calculeTotalCarrots());
 
             game.clearSwitchLevel();
 
-            // Re-initialise toute la scène, y compris les sprites, la taille et le status bar
+            // Re-initialise toute la scène
             initialize();
         }
     }
@@ -178,11 +182,6 @@ import java.util.*;
                     hornets.add(hornet); // Ajoute la guêpe à la liste pour la gestion
                     sprites.add(new SpriteHornet(layer, hornet)); // Ajout du sprite correspondant
                 }
-            }
-
-            if (decor instanceof Door && !(((Door) decor).getIsOpen()) && game.totalCarrots() == 0) {
-                ((Door) decor).setIsOpen(true);
-                ((Door) decor).openDoors(game, decor);
             }
         });
 
