@@ -110,7 +110,7 @@ import java.util.*;
             game.world().setCurrentLevel(newLevel);
 
             // Repositionne le jardinier
-            game.getGardener().setPosition(new Position(newLevel, 1, 0));
+            game.getGardener().setPosition(new Position(newLevel, 0, 0));
             game.getGardener().setModified(true);
 
             // Recalcule le nombre de carottes pour ce niveau
