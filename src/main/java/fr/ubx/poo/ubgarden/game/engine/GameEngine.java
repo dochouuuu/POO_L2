@@ -50,6 +50,9 @@ import java.util.*;
     }
 
     private void initialize() {
+        sprites.clear();
+        layer.getChildren().clear();
+
         int height = game.world().getGrid().height();
         int width = game.world().getGrid().width();
         int sceneWidth = width * ImageResource.size;
@@ -105,23 +108,21 @@ import java.util.*;
     private void checkLevel() {
         if (game.isSwitchLevelRequested()) {
             int newLevel = game.getSwitchLevel();
+            if (newLevel >= 1 && newLevel <= game.world().maxLevel()) {
+                // Change le niveau courant
+                game.world().setCurrentLevel(newLevel);
 
-            // Change le niveau courant
-            game.world().setCurrentLevel(newLevel);
+                // Repositionne le jardinier
+                game.getGardener().setPosition(new Position(newLevel, 0, 0));
 
-            // Repositionne le jardinier
-            game.getGardener().setPosition(new Position(newLevel, 0, 0));
-            sprites.clear();
-            layer.getChildren().clear();
+                // Recalcule le nombre de carottes pour ce niveau
+                game.setTotalCarrots(game.calculTotalCarrots());
 
+                game.clearSwitchLevel();
 
-            // Recalcule le nombre de carottes pour ce niveau
-            game.setTotalCarrots(game.calculeTotalCarrots());
-
-            game.clearSwitchLevel();
-
-            // Re-initialise toute la scène
-            initialize();
+                // Re-initialise toute la scène
+                initialize();
+            }
         }
     }
 

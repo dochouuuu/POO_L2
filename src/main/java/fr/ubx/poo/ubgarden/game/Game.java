@@ -76,7 +76,7 @@ public class Game {
         return this.totalCarrots;
     }
 
-    public int calculeTotalCarrots() {
+    public int calculTotalCarrots() {
         int cpt = 0;
         for (Decor decor : world().getGrid().values()) {
             if (decor != null && decor.getBonus() instanceof Carrots) {
@@ -86,11 +86,11 @@ public class Game {
         return cpt;
     }
 
-
     public void openDoors() {
         for (Decor decor : world().getGrid().values()) {
-            if (decor instanceof Door door && !door.getIsOpen()) {
-                door.open(this);
+            if (decor instanceof Door door && door.isToNextLevel() && !door.getIsOpen()) {
+                door.setIsOpen(true);
+                door.setModified(true);
             }
         }
     }

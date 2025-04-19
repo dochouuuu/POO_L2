@@ -6,14 +6,24 @@ import fr.ubx.poo.ubgarden.game.go.personage.Gardener;
 
 public class Door extends Decor {
     private boolean isOpen;
-    public Door(Position position) {
+    private boolean toNextLevel;
+
+    public Door(Position position, boolean isOpen, boolean toNextLevel) {
         super(position);
-        this.isOpen = false;
+        this.isOpen = isOpen;
+        this.toNextLevel = toNextLevel;
+    }
+
+    public Door(Position position) {
+        this(position, false, true);
     }
 
     public Door(Position position, boolean isOpen) {
-        super(position);
-        this.isOpen = isOpen;
+        this(position, isOpen, true);
+    }
+
+    public boolean isToNextLevel() {
+        return toNextLevel;
     }
 
     public void setIsOpen (Boolean isOpen){
@@ -29,12 +39,12 @@ public class Door extends Decor {
         return this.isOpen;
     }
 
-    public void open(Game game) {
+    /*public void open(Game game) {
         Position pos = this.getPosition();
-        Door opened = new Door(pos, true);
+        Door opened = new Door(pos, true, this.toNextLevel);
         game.world().getGrid().put(pos, opened);
         opened.setModified(true);
 
         System.out.println("Porte ouverte à (" + pos.x() + ", " + pos.y() + ")");
-    }
+    }*/
 }

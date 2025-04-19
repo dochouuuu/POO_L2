@@ -75,14 +75,19 @@ public class Level implements Map {
                     case NestHornet:
                         decors.put(position, new HornetNest(position));
                         break;
-                    case DoorNextOpened, DoorPrevOpened: {
-                        Door door = new Door(position, true);
+                    case DoorNextOpened: {
+                        Door door = new Door(position, true, true); // porte ouverte vers le niveau suivant
+                        decors.put(position, door);
+                        break;
+                    }
+                    case DoorPrevOpened: {
+                        Door door = new Door(position, true, false); // porte ouverte vers le niveau précédent
                         decors.put(position, door);
                         break;
                     }
                     case DoorNextClosed: {
-                        Door door1 = new Door(position);
-                        decors.put(position, door1);
+                        Door door = new Door(position, false, true); // porte FERMÉE vers le niveau suivant
+                        decors.put(position, door);
                         break;
                     }
                     default:

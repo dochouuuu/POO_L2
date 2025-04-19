@@ -117,14 +117,13 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
             }
         }
         Decor decor = game.world().getGrid().get(this.getPosition());
-        if (decor instanceof Door) {
-            int current = game.world().currentLevel();
-            int next = current + 1;
+        if (decor instanceof Door door && door.getIsOpen()) {
+            int currentLevel = game.world().currentLevel();
+            int targetLevel = door.isToNextLevel() ? currentLevel + 1 : currentLevel - 1;
 
-            if (next <= game.world().maxLevel()) {
-                game.requestSwitchLevel(next);
-                System.out.println("Passage au niveau " + next);
-            }
+            System.out.println("Passage au niveau " + targetLevel + " via une porte " + (door.isToNextLevel() ? "vers le niveau suivant" : "vers le niveau précédent"));
+
+            game.requestSwitchLevel(targetLevel);
         }
         else {
             long inactive = (now - lastMoveTime) / 1_000_000;
