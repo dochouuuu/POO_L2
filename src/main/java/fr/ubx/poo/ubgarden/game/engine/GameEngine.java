@@ -83,7 +83,7 @@ import java.util.*;
 
         sprites.add(new SpriteGardener(layer, gardener));
         resizeScene(sceneWidth, sceneHeight);
-        }
+    }
 
     void buildAndSetGameLoop() {
         gameLoop = new AnimationTimer() {
@@ -105,28 +105,56 @@ import java.util.*;
         };
     }
 
-    private void checkLevel() {
-        if (game.isSwitchLevelRequested()) {
-            int newLevel = game.getSwitchLevel();
-            if (newLevel >= 1 && newLevel <= game.world().maxLevel()) {
-                // Change le niveau courant
-                game.world().setCurrentLevel(newLevel);
+     private void checkLevel() {
+         if (game.isSwitchLevelRequested()) {
+             int newLevel = game.getSwitchLevel();
+             if (newLevel >= 1 && newLevel <= game.world().maxLevel()) {
+                 int previousLevel = game.world().currentLevel();
+                 game.world().setCurrentLevel(newLevel);
 
-                // Repositionne le jardinier
-                game.getGardener().setPosition(new Position(newLevel, 0, 0));
+                 Position targetDoorPosition = null;
+                 boolean movingUp = newLevel > previousLevel;
 
-                // Recalcule le nombre de carottes pour ce niveau
-                game.setTotalCarrots(game.calculTotalCarrots());
+                 for (Decor decor : game.world().getGrid().values()) {
+                     if (decor instanceof Door door && door.getIsOpen()) {
+                         // Si on monte, on cherche la porte du niveau suivant
+                         if (movingUp && !door.isToNextLevel()) {
+                             targetDoorPosition = door.getPosition();
+                             break;
+                         }
+                         // Si on descend, on cherche la porte du niveau précédent
+                         else if (!movingUp && door.isToNextLevel()) {
+                             targetDoorPosition = door.getPosition();
+                             break;
+                         }
+                     }
+                 }
 
-                game.clearSwitchLevel();
+                 if (targetDoorPosition == null) {
+                     for (Decor decor : game.world().getGrid().values()) {
+                         if (decor instanceof Door door && door.getIsOpen()) {
+                             targetDoorPosition = door.getPosition();
+                             break;
+                         }
+                     }
+                 }
+                 if (targetDoorPosition == null)
+                     targetDoorPosition = new Position(newLevel, 0, 0);
 
-                // Re-initialise toute la scène
-                initialize();
-            }
-        }
-    }
+                 gardener.setPosition(targetDoorPosition);
+                 gardener.setDirection(Direction.DOWN);
+                 gardener.setJustArrived(true);
 
-       private void checkCollision() {
+                 game.setTotalCarrots(game.calculTotalCarrots());
+                 game.getGardener().resetCarrots();
+
+                 game.clearSwitchLevel();
+                 initialize();
+             }
+         }
+     }
+
+     private void checkCollision() {
         // Check a collision between the gardener and a wasp or an hornet
     }
 

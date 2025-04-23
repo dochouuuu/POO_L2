@@ -31,9 +31,9 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
     private int insecticideCount = 0;
     private List<Timer> poisonTimers = new ArrayList<>();
     private int carrots = 0;
+    private boolean justArrived = false;
 
     public Gardener(Game game, Position position) {
-
         super(game, position);
         this.direction = Direction.DOWN;
         this.energy = game.configuration().gardenerEnergy();
@@ -89,6 +89,11 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
 
     @Override
     public Position move(Direction direction) {
+        System.out.println("MOVE: justArrived=" + justArrived + ", pos=" + getPosition());
+        if (isJustArrived()) {
+            setJustArrived(false);
+            System.out.println("MOVE => setJustArrived(FALSE)");
+        }
         Position nextPos = direction.nextPosition(getPosition());
 
         Map map = game.world().getGrid();
@@ -110,6 +115,7 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
 
     private long lastMoveTime = 0;
     public void update(long now) {
+        System.out.println("UPDATE: justArrived=" + justArrived + ", pos=" + getPosition());
         if (moveRequested) {
             if (canMove(direction)) {
                 move(direction);
@@ -117,7 +123,7 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
             }
         }
         Decor decor = game.world().getGrid().get(this.getPosition());
-        if (decor instanceof Door door && door.getIsOpen()) {
+        if (!this.isJustArrived() && decor instanceof Door door && door.getIsOpen()) {
             int currentLevel = game.world().currentLevel();
             int targetLevel = door.isToNextLevel() ? currentLevel + 1 : currentLevel - 1;
 
@@ -153,6 +159,15 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
         return direction;
     }
 
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+        setModified(true);
+    }
+
+    public void resetCarrots() {
+        this.carrots = 0;
+    }
+
     public void collectCarrot() {
         this.carrots++;
 
@@ -160,5 +175,12 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
             game.openDoors();
         }
         System.out.println("Carottes collectées : " + this.carrots + "/" + game.getTotalCarrots());
+    }
+
+    public boolean isJustArrived() {
+        return justArrived;
+    }
+    public void setJustArrived(boolean justArrived) {
+        this.justArrived = justArrived;
     }
 }
