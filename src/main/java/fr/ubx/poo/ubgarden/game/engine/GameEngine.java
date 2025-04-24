@@ -108,47 +108,58 @@ import java.util.*;
      private void checkLevel() {
          if (game.isSwitchLevelRequested()) {
              int newLevel = game.getSwitchLevel();
+
+             // Vérifie que le niveau demandé existe
              if (newLevel >= 1 && newLevel <= game.world().maxLevel()) {
                  int previousLevel = game.world().currentLevel();
+
+                 // Change le niveau courant
                  game.world().setCurrentLevel(newLevel);
 
-                 Position targetDoorPosition = null;
+                 Position targetPosition = null;
                  boolean movingUp = newLevel > previousLevel;
 
+                 // Cherche la porte qui correspond au bon sens
                  for (Decor decor : game.world().getGrid().values()) {
                      if (decor instanceof Door door && door.getIsOpen()) {
-                         // Si on monte, on cherche la porte du niveau suivant
+                         // Si on monte, on cherche une porte qui ne mène pas au niveau suivant (côté entrée)
                          if (movingUp && !door.isToNextLevel()) {
-                             targetDoorPosition = door.getPosition();
+                             targetPosition = door.getPosition();
                              break;
                          }
-                         // Si on descend, on cherche la porte du niveau précédent
+                         // Si on descend, on cherche une porte qui mène au niveau suivant (côté sortie)
                          else if (!movingUp && door.isToNextLevel()) {
-                             targetDoorPosition = door.getPosition();
+                             targetPosition = door.getPosition();
                              break;
                          }
                      }
                  }
 
-                 if (targetDoorPosition == null) {
+                 // Si on n'a pas trouvé de porte dans le bon sens, on prend n'importe quelle porte ouverte
+                 if (targetPosition == null) {
                      for (Decor decor : game.world().getGrid().values()) {
                          if (decor instanceof Door door && door.getIsOpen()) {
-                             targetDoorPosition = door.getPosition();
+                             targetPosition = door.getPosition();
                              break;
                          }
                      }
                  }
-                 if (targetDoorPosition == null)
-                     targetDoorPosition = new Position(newLevel, 0, 0);
 
-                 gardener.setPosition(targetDoorPosition);
+                 // Place le jardinier à la position choisie
+                 gardener.setPosition(targetPosition);
                  gardener.setDirection(Direction.DOWN);
                  gardener.setJustArrived(true);
 
+                 // Met à jour le nombre de carottes à collecter
                  game.setTotalCarrots(game.calculTotalCarrots());
+
+                 // Réinitialise le compteur de carottes
                  game.getGardener().resetCarrots();
 
+                 // Oublie la demande de changement de niveau
                  game.clearSwitchLevel();
+
+                 // Ré-initialise toute la scène graphique
                  initialize();
              }
          }
@@ -217,7 +228,6 @@ import java.util.*;
         });
 
         // Mise à jour
-        sprites.forEach(sprite -> sprite.updateImage());
         wasps.forEach(wasp -> wasp.update(now));
         hornets.forEach(wasp -> wasp.update(now));
         gardener.update(now);
@@ -231,7 +241,6 @@ import java.util.*;
             showMessage("Gagné !", Color.GREEN);
         }
     }
-
 
     public void cleanupSprites() {
         sprites.forEach(sprite -> {

@@ -89,10 +89,8 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
 
     @Override
     public Position move(Direction direction) {
-        System.out.println("MOVE: justArrived=" + justArrived + ", pos=" + getPosition());
         if (isJustArrived()) {
             setJustArrived(false);
-            System.out.println("MOVE => setJustArrived(FALSE)");
         }
         Position nextPos = direction.nextPosition(getPosition());
 
@@ -115,7 +113,6 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
 
     private long lastMoveTime = 0;
     public void update(long now) {
-        System.out.println("UPDATE: justArrived=" + justArrived + ", pos=" + getPosition());
         if (moveRequested) {
             if (canMove(direction)) {
                 move(direction);
