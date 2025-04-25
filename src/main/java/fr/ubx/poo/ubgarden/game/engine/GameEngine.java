@@ -5,7 +5,9 @@
 package fr.ubx.poo.ubgarden.game.engine;
 
 import fr.ubx.poo.ubgarden.game.*;
+import fr.ubx.poo.ubgarden.game.go.bonus.Insecticide;
 import fr.ubx.poo.ubgarden.game.go.decor.*;
+import fr.ubx.poo.ubgarden.game.go.decor.ground.Grass;
 import fr.ubx.poo.ubgarden.game.go.personage.*;
 import fr.ubx.poo.ubgarden.game.view.*;
 import javafx.animation.AnimationTimer;
@@ -204,45 +206,65 @@ import java.util.*;
         }.start();
     }
 
-    private void update(long now) {
-        // Mise à jour des décors (comme WaspNest)
-        game.world().getGrid().values().forEach(decor -> {
-            decor.update(now);
-            if (decor instanceof WaspNest) {
-                WaspNest waspNest = (WaspNest) decor;
-                Wasp wasp = waspNest.spawnWasp(now, game); // Génère une guêpe si le timer est fini
-                if (wasp != null) {
-                    wasps.add(wasp); // Ajoute la guêpe à la liste pour la gestion
-                    sprites.add(new SpriteWasp(layer, wasp)); // Ajout du sprite correspondant
-                }
-            }
+     private void spawnInsecticide(int quantity) {
+         for (int i = 0; i < quantity; i++) {
+             Position insecticidePosition = Position.randomPos(game, new Position(game.world().currentLevel(), 0, 0), game.world().getGrid().width()); // Générer une position aléatoire dans toute la carte
+             while (game.world().getGrid().get(insecticidePosition) instanceof Tree) {
+                 insecticidePosition = Position.randomPos(game, new Position(game.world().currentLevel(), 0, 0), game.world().getGrid().width()); // Retente si c'est un arbre
+             }
 
-            if (decor instanceof HornetNest) {
-                HornetNest hornetNest = (HornetNest) decor;
-                Hornet hornet = hornetNest.spawnHornet(now, game); // Génère une guêpe si le timer est fini
-                if (hornet != null) {
-                    hornets.add(hornet); // Ajoute la guêpe à la liste pour la gestion
-                    sprites.add(new SpriteHornet(layer, hornet)); // Ajout du sprite correspondant
-                }
-            }
-        });
+             // Ajout d'un insecticide sur le décor Grass
+             Decor grass = new Grass(insecticidePosition);
+             Insecticide insecticide = new Insecticide(insecticidePosition, grass);
+             grass.setBonus(insecticide);
+             game.world().getGrid().put(insecticidePosition, grass);
+             sprites.add(SpriteFactory.create(layer, insecticide));
+         }
+     }
 
-        // Mise à jour
-        wasps.forEach(wasp -> wasp.update(now));
-        hornets.forEach(wasp -> wasp.update(now));
-        gardener.update(now);
+     private void update(long now) {
+         game.world().getGrid().values().forEach(decor -> {
+             decor.update(now);
 
-        // Vérification des conditions de fin de jeu
-        if (gardener.getEnergy() < 0) {
-            gameLoop.stop();
-            showMessage("Perdu!", Color.RED);
-        } else if (gardener.getPosition().equals(game.getHedgehogPosition())) {
-            gameLoop.stop();
-            showMessage("Gagné !", Color.GREEN);
-        }
-    }
+             if (decor instanceof WaspNest) {
+                 WaspNest waspNest = (WaspNest) decor;
+                 Wasp wasp = waspNest.spawnWasp(now, game); // Génère une guêpe si le timer est fini
+                 if (wasp != null) {
+                     wasps.add(wasp);
+                     sprites.add(new SpriteWasp(layer, wasp));
 
-    public void cleanupSprites() {
+                     spawnInsecticide(1); // Ajoute un seul insecticide pour les guêpes
+                 }
+             }
+
+             if (decor instanceof HornetNest) {
+                 HornetNest hornetNest = (HornetNest) decor;
+                 Hornet hornet = hornetNest.spawnHornet(now, game); // Génère un frelon si le timer est fini
+                 if (hornet != null) {
+                     hornets.add(hornet);
+                     sprites.add(new SpriteHornet(layer, hornet));
+
+                     spawnInsecticide(2); // Ajoute deux insecticides pour les frelons
+                 }
+             }
+         });
+
+         // Mise à jour des insectes et du jardinier
+         wasps.forEach(wasp -> wasp.update(now));
+         hornets.forEach(hornet -> hornet.update(now));
+         gardener.update(now);
+
+         // Vérification des conditions de fin de jeu
+         if (gardener.getEnergy() < 0) {
+             gameLoop.stop();
+             showMessage("Perdu!", Color.RED);
+         } else if (gardener.getPosition().equals(game.getHedgehogPosition())) {
+             gameLoop.stop();
+             showMessage("Gagné !", Color.GREEN);
+         }
+     }
+
+     public void cleanupSprites() {
         sprites.forEach(sprite -> {
             if (sprite.getGameObject().isDeleted()) {
                 cleanUpSprites.add(sprite);

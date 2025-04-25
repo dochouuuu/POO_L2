@@ -2,7 +2,6 @@ package fr.ubx.poo.ubgarden.game.go.personage;
 
 import fr.ubx.poo.ubgarden.game.Direction;
 import fr.ubx.poo.ubgarden.game.Game;
-import fr.ubx.poo.ubgarden.game.Map;
 import fr.ubx.poo.ubgarden.game.Position;
 import fr.ubx.poo.ubgarden.game.go.GameObject;
 import fr.ubx.poo.ubgarden.game.go.Movable;
@@ -12,13 +11,13 @@ import fr.ubx.poo.ubgarden.game.go.decor.Decor;
 
 import java.util.Random;
 
-public abstract class Insects extends GameObject implements Movable, PickupVisitor, WalkVisitor {
+public abstract class Insect extends GameObject implements Movable, PickupVisitor, WalkVisitor {
     private Direction direction;
     private boolean moveRequested = false;
 
     private int MOVE_INTERVAL = 0; // Intervalle de 1 seconde
 
-    public Insects(Game game, Position position) {
+    public Insect(Game game, Position position) {
         super(game, position);
         this.direction = Direction.DOWN;
     }

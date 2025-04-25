@@ -4,15 +4,11 @@ import fr.ubx.poo.ubgarden.game.Direction;
 import fr.ubx.poo.ubgarden.game.Game;
 import fr.ubx.poo.ubgarden.game.Map;
 import fr.ubx.poo.ubgarden.game.Position;
-import fr.ubx.poo.ubgarden.game.go.GameObject;
 import fr.ubx.poo.ubgarden.game.go.Movable;
 import fr.ubx.poo.ubgarden.game.go.WalkVisitor;
 import fr.ubx.poo.ubgarden.game.go.decor.Decor;
-import fr.ubx.poo.ubgarden.game.go.decor.WaspNest;
 
-import java.util.Random;
-
-public class Hornet extends Insects implements Movable, WalkVisitor {
+public class Hornet extends Insect implements Movable, WalkVisitor {
 
     public Hornet (Game game, Position position){
         super(game, position);
