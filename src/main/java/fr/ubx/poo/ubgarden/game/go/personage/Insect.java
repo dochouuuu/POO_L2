@@ -54,24 +54,26 @@ public abstract class Insect extends GameObject implements Movable, PickupVisito
         if (elapsedTime >= MOVE_INTERVAL) {
             Direction[] directions = Direction.values();
             Random rand = new Random();
-            Direction randomDirection;
 
-            // Boucle tant qu'une direction valide n'est pas trouvée
             boolean moved = false;
-            while (!moved) {
-                randomDirection = directions[rand.nextInt(directions.length)];
+            int attempts = 0;
+
+            // Essaie au plus autant de directions qu'il y en a (pour éviter boucle infinie)
+            while (!moved && attempts < directions.length) {
+                Direction randomDirection = directions[rand.nextInt(directions.length)];
                 if (canMove(randomDirection)) {
                     this.direction = randomDirection;
                     move(randomDirection); // Change la position dans une direction valide
                     moved = true; // Marque que le mouvement a été effectué
                 }
+                attempts++;
             }
-
             lastMoveTime = now; // Met à jour le dernier moment de déplacement
         }
 
         moveRequested = false; // Réinitialise la demande de déplacement
     }
+
 
     public void hurt(int damage) {
     }
