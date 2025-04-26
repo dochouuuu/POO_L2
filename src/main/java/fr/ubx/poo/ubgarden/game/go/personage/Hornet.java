@@ -16,16 +16,4 @@ public class Hornet extends Insect implements Movable, WalkVisitor {
         this.setLifePoints(2);
     }
 
-    @Override
-    public final boolean canMove(Direction direction) {
-        Position nextPos = direction.nextPosition(getPosition());
-        Map map = game.world().getGrid();
-        if(!map.inside(nextPos)){
-            return false;
-        }
-        Decor decor = map.get(nextPos);
-        return decor == null || decor.walkableBy(this);
-    }
-
-
 }

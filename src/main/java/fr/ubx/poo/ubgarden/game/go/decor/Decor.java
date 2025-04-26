@@ -7,6 +7,7 @@ import fr.ubx.poo.ubgarden.game.go.Walkable;
 import fr.ubx.poo.ubgarden.game.go.bonus.Bonus;
 import fr.ubx.poo.ubgarden.game.go.personage.Gardener;
 import fr.ubx.poo.ubgarden.game.go.personage.Hornet;
+import fr.ubx.poo.ubgarden.game.go.personage.Insect;
 import fr.ubx.poo.ubgarden.game.go.personage.Wasp;
 
 public abstract class Decor extends GameObject implements Walkable, Pickupable {
@@ -35,12 +36,8 @@ public abstract class Decor extends GameObject implements Walkable, Pickupable {
         return gardener.canWalkOn(this);
     }
 
-    public boolean walkableBy(Wasp wasp) {
-        return wasp.canWalkOn(this);
-    }
-
-    public boolean walkableBy(Hornet hornet) {
-        return hornet.canWalkOn(this);
+    public boolean walkableBy(Insect insect) {
+        return insect.canWalkOn(this);
     }
 
     @Override

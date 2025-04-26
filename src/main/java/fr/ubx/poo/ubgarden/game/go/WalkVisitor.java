@@ -33,6 +33,4 @@ public interface WalkVisitor {
         }
         return true;
     }
-
-    // TODO
 }

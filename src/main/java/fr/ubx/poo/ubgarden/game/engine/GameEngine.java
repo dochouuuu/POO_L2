@@ -169,10 +169,11 @@ import java.util.*;
      }
 
      private void checkCollision() {
-        // Check a collision between the gardener and a wasp or an hornet
-         wasps.forEach(wasp -> {
+         Iterator<Wasp> waspIterator = wasps.iterator();
+         while (waspIterator.hasNext()) {
+             Wasp wasp = waspIterator.next();
              if (gardener.getPosition().equals(wasp.getPosition())) {
-                 if (gardener.getInsecticideCount() >= 1){
+                 if (gardener.getInsecticideCount() >= 1) {
                      gardener.useInsecticide(1);
                      wasp.hurt(1);
                  } else {
@@ -182,14 +183,17 @@ import java.util.*;
 
                  if (wasp.getLifePoints() == 0) {
                      wasp.remove();
+                     waspIterator.remove();
                      cleanupSprites();
                  }
              }
-         });
+         }
 
-         hornets.forEach(hornet -> {
-             if (game.getGardener().getPosition().equals(hornet.getPosition())) {
-                 if (gardener.getInsecticideCount() >= 2){
+         Iterator<Hornet> hornetIterator = hornets.iterator();
+         while (hornetIterator.hasNext()) {
+             Hornet hornet = hornetIterator.next();
+             if (gardener.getPosition().equals(hornet.getPosition())) {
+                 if (gardener.getInsecticideCount() >= 2) {
                      gardener.useInsecticide(2);
                      hornet.hurt(2);
                  } else {
@@ -199,13 +203,15 @@ import java.util.*;
 
                  if (hornet.getLifePoints() == 0) {
                      hornet.remove();
+                     hornetIterator.remove();
                      cleanupSprites();
                  }
              }
-         });
-    }
+         }
+     }
 
-    private void processInput() {
+
+     private void processInput() {
         if (input.isExit()) {
             gameLoop.stop();
             Platform.exit();

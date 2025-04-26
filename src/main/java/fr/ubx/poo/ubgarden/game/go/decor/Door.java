@@ -2,7 +2,9 @@ package fr.ubx.poo.ubgarden.game.go.decor;
 
 import fr.ubx.poo.ubgarden.game.Game;
 import fr.ubx.poo.ubgarden.game.Position;
+import fr.ubx.poo.ubgarden.game.go.Walkable;
 import fr.ubx.poo.ubgarden.game.go.personage.Gardener;
+import fr.ubx.poo.ubgarden.game.go.personage.Insect;
 
 public class Door extends Decor {
     private boolean isOpen;
@@ -39,12 +41,6 @@ public class Door extends Decor {
         return this.isOpen;
     }
 
-    /*public void open(Game game) {
-        Position pos = this.getPosition();
-        Door opened = new Door(pos, true, this.toNextLevel);
-        game.world().getGrid().put(pos, opened);
-        opened.setModified(true);
-
-        System.out.println("Porte ouverte à (" + pos.x() + ", " + pos.y() + ")");
-    }*/
+    @Override
+    public boolean walkableBy (Insect insect) { return false;}
 }

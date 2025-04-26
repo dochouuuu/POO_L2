@@ -2,6 +2,7 @@ package fr.ubx.poo.ubgarden.game.go.personage;
 
 import fr.ubx.poo.ubgarden.game.Direction;
 import fr.ubx.poo.ubgarden.game.Game;
+import fr.ubx.poo.ubgarden.game.Map;
 import fr.ubx.poo.ubgarden.game.Position;
 import fr.ubx.poo.ubgarden.game.go.GameObject;
 import fr.ubx.poo.ubgarden.game.go.Movable;
@@ -32,23 +33,19 @@ public abstract class Insect extends GameObject implements Movable, PickupVisito
 
     public void setLifePoints (int lifePoints) { this.lifePoints = lifePoints; }
 
-    public void requestMove(Direction direction) {
-        if (direction != this.direction) {
-            this.direction = direction;
-            setModified(true);
+    @Override
+    public final boolean canMove(Direction direction) {
+        Position nextPos = direction.nextPosition(getPosition());
+        Map map = game.world().getGrid();
+        if(!map.inside(nextPos)){
+            return false;
         }
-        moveRequested = true;
+        Decor decor = map.get(nextPos);
+        return decor == null || decor.walkableBy(this);
     }
 
-    @Override
-    public boolean canMove(Direction direction) {
-        return true;
-    }
-
-    @Override
     public Position move(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
-        Decor next = game.world().getGrid().get(nextPos);
         setPosition(nextPos);
         return nextPos;
     }
@@ -77,12 +74,11 @@ public abstract class Insect extends GameObject implements Movable, PickupVisito
             lastMoveTime = now; // Met à jour le dernier moment de déplacement
         }
 
-        moveRequested = false; // Réinitialise la demande de déplacement
+        moveRequested = false ; // Réinitialise la demande de déplacement
     }
 
 
-    public void hurt(int damage) { this.lifePoints = this.lifePoints - damage;
-    }
+    public void hurt(int damage) { this.lifePoints = this.lifePoints - damage; }
 
     public Direction getDirection() {
         return direction;
