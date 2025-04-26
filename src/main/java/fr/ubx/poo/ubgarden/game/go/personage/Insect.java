@@ -8,7 +8,9 @@ import fr.ubx.poo.ubgarden.game.go.GameObject;
 import fr.ubx.poo.ubgarden.game.go.Movable;
 import fr.ubx.poo.ubgarden.game.go.PickupVisitor;
 import fr.ubx.poo.ubgarden.game.go.WalkVisitor;
+import fr.ubx.poo.ubgarden.game.go.bonus.Insecticide;
 import fr.ubx.poo.ubgarden.game.go.decor.Decor;
+import fr.ubx.poo.ubgarden.game.go.decor.ground.Grass;
 
 import java.util.Random;
 
@@ -18,7 +20,7 @@ public abstract class Insect extends GameObject implements Movable, PickupVisito
     private int lifePoints = 1;
 
 
-    private int MOVE_INTERVAL = 0; // Intervalle de 1 seconde
+    private int MOVE_INTERVAL = 1; // Intervalle de 1 seconde
 
     public Insect(Game game, Position position) {
         super(game, position);
@@ -46,6 +48,14 @@ public abstract class Insect extends GameObject implements Movable, PickupVisito
 
     public Position move(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
+        Decor next = game.world().getGrid().get(nextPos);
+
+        // Si l'insecte marche sur une bombe insecticide, il perd un point de vie
+        if (next instanceof Grass && ((Grass) next).getBonus() instanceof Insecticide) {
+            this.hurt(1);
+            ((Grass) next).getBonus().remove(); // On supprime l'insecticide pour éviter qu'il y en ait trop
+        }
+
         setPosition(nextPos);
         return nextPos;
     }
@@ -61,7 +71,7 @@ public abstract class Insect extends GameObject implements Movable, PickupVisito
             boolean moved = false;
             int attempts = 0;
 
-            // Essaie au plus autant de directions qu'il y en a (pour éviter boucle infinie)
+            // Essaie au plus autant de directions qu'il y en a (pour éviter une boucle infinie)
             while (!moved && attempts < directions.length) {
                 Direction randomDirection = directions[rand.nextInt(directions.length)];
                 if (canMove(randomDirection)) {

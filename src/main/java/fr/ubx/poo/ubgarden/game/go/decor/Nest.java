@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class Nest extends Decor {
     private long lastInsect = 0;
-    private int SPAWN_INTERVAL = 0; // Intervalle de 5 secondes
+    private int SPAWN_INTERVAL = 0; // Intervalle pour les insectes
 
     public Nest(Position position) {
         super(position);
@@ -21,11 +21,6 @@ public class Nest extends Decor {
 
     public void setSpawnInterval(int interval) {
         this.SPAWN_INTERVAL = interval;
-    }
-
-    @Override
-    public void update(long now) {
-        // Rien à faire ici pour le moment
     }
 
     // Méthode abstraite que les sous-classes devront implémenter pour créer le bon insecte

@@ -8,7 +8,6 @@ import fr.ubx.poo.ubgarden.game.Position;
 import fr.ubx.poo.ubgarden.game.go.decor.Decor;
 
 public abstract class Ground extends Decor {
-
     public Ground(Position position) {
         super(position);
     }

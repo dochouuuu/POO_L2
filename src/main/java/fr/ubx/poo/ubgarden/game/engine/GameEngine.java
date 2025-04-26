@@ -169,6 +169,7 @@ import java.util.*;
      }
 
      private void checkCollision() {
+         // Check si collision entre le jardiner et un insecte
          Iterator<Wasp> waspIterator = wasps.iterator();
          while (waspIterator.hasNext()) {
              Wasp wasp = waspIterator.next();
@@ -201,7 +202,7 @@ import java.util.*;
                      hornet.hurt(1);
                  }
 
-                 if (hornet.getLifePoints() == 0) {
+                 if (hornet.getLifePoints() <= 0) {
                      hornet.remove();
                      hornetIterator.remove();
                      cleanupSprites();
@@ -247,6 +248,7 @@ import java.util.*;
     }
 
      private void spawnInsecticide(int quantity) {
+         // Fait apparaître des instectides à des positions aléatoires
          for (int i = 0; i < quantity; i++) {
              Position insecticidePosition = Position.randomPos(game, new Position(game.world().currentLevel(), 0, 0), game.world().getGrid().width()); // Générer une position aléatoire dans toute la carte
              Decor decor = game.world().getGrid().get(insecticidePosition);
@@ -263,39 +265,57 @@ import java.util.*;
      }
 
      private void update(long now) {
+         // Mise à jour des décors et des nids d'insectes
          game.world().getGrid().values().forEach(decor -> {
              decor.update(now);
              checkCollision();
              if (decor instanceof WaspNest) {
                  WaspNest waspNest = (WaspNest) decor;
-                 Wasp wasp = waspNest.spawnWasp(now, game); // Génère une guêpe si le timer est fini
+                 Wasp wasp = waspNest.spawnWasp(now, game);
                  if (wasp != null) {
                      wasps.add(wasp);
                      sprites.add(new SpriteWasp(layer, wasp));
-
-                     spawnInsecticide(1); // Ajoute un seul insecticide pour les guêpes
+                     spawnInsecticide(1);
                  }
              }
-
              if (decor instanceof HornetNest) {
                  HornetNest hornetNest = (HornetNest) decor;
-                 Hornet hornet = hornetNest.spawnHornet(now, game); // Génère un frelon si le timer est fini
+                 Hornet hornet = hornetNest.spawnHornet(now, game);
                  if (hornet != null) {
                      hornets.add(hornet);
                      sprites.add(new SpriteHornet(layer, hornet));
-
-                     spawnInsecticide(2); // Ajoute deux insecticides pour les frelons
+                     spawnInsecticide(2);
                  }
              }
          });
 
-         // Mise à jour des insectes et du jardinier
-         wasps.forEach(wasp -> wasp.update(now));
-         hornets.forEach(hornet -> hornet.update(now));
-         //checkCollision();
-         //cleanupSprites();
-         gardener.update(now);
+         // Mise à jour des insectes
+         Iterator<Wasp> waspIterator = wasps.iterator();
+         while (waspIterator.hasNext()) {
+             Wasp wasp = waspIterator.next();
+             if (wasp.getLifePoints() <= 0) {
+                 wasp.remove();
+                 waspIterator.remove();
+                 cleanupSprites();
+             } else {
+                 wasp.update(now);
+             }
+         }
 
+         Iterator<Hornet> hornetIterator = hornets.iterator();
+         while (hornetIterator.hasNext()) {
+             Hornet hornet = hornetIterator.next();
+             if (hornet.getLifePoints() <= 0) {
+                 hornet.remove();
+                 hornetIterator.remove();
+                 cleanupSprites();
+             } else {
+                 hornet.update(now);
+             }
+         }
+
+         // Mise à jour du jardinier
+         gardener.update(now);
 
          // Vérification des conditions de fin de jeu
          if (gardener.getEnergy() < 0) {
@@ -306,6 +326,7 @@ import java.util.*;
              showMessage("Gagné !", Color.GREEN);
          }
      }
+
 
      public void cleanupSprites() {
         sprites.forEach(sprite -> {
@@ -320,8 +341,9 @@ import java.util.*;
     }
 
     public void cleanupInsects() {
-        wasps.removeIf(Wasp::isDeleted); // Supprime toutes les guêpes marquées comme supprimées
-        hornets.removeIf(Hornet::isDeleted); // Supprime tous les frelons marqués comme supprimés
+        // Supprime tous les insectes marqués comme supprimées
+        wasps.removeIf(Wasp::isDeleted);
+        hornets.removeIf(Hornet::isDeleted);
     }
 
     private void render() {

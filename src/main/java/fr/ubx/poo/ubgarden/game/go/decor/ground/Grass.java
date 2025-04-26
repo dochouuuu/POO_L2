@@ -21,9 +21,4 @@ public class Grass extends Ground {
         }
     }
 
-    @Override
-    public int energyConsumptionWalk() {
-        return 1;
-    }
-
 }

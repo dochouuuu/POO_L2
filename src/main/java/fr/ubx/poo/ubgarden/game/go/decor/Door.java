@@ -41,6 +41,5 @@ public class Door extends Decor {
         return this.isOpen;
     }
 
-    @Override
     public boolean walkableBy (Insect insect) { return false;}
 }
