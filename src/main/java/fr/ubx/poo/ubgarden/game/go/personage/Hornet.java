@@ -13,7 +13,9 @@ public class Hornet extends Insect implements Movable, WalkVisitor {
     public Hornet (Game game, Position position){
         super(game, position);
         this.setMoveInterval(1000);
+        this.setLifePoints(2);
     }
+
     @Override
     public final boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());

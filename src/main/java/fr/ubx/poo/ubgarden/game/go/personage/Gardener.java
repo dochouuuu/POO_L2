@@ -47,6 +47,8 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
         return insecticideCount;
     }
 
+    public void useInsecticide (int number) { this.insecticideCount = this.insecticideCount - number;}
+
     @Override
     public void pickUp(EnergyBoost apple) {
         energy = Math.min(energy + game.configuration().energyBoost(), game.configuration().gardenerEnergy());
@@ -145,11 +147,7 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
     }
 
     public void hurt(int damage) {
-        this.energy -= damage;
-    }
-
-    public void hurt() {
-        hurt(1);
+        this.energy = this.energy - damage;
     }
 
     public Direction getDirection() {

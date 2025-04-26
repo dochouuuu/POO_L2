@@ -14,6 +14,8 @@ import java.util.Random;
 public abstract class Insect extends GameObject implements Movable, PickupVisitor, WalkVisitor {
     private Direction direction;
     private boolean moveRequested = false;
+    private int lifePoints = 1;
+
 
     private int MOVE_INTERVAL = 0; // Intervalle de 1 seconde
 
@@ -25,6 +27,10 @@ public abstract class Insect extends GameObject implements Movable, PickupVisito
     public void setMoveInterval (int interval){
         this.MOVE_INTERVAL = interval;
     }
+
+    public int getLifePoints () { return this.lifePoints; }
+
+    public void setLifePoints (int lifePoints) { this.lifePoints = lifePoints; }
 
     public void requestMove(Direction direction) {
         if (direction != this.direction) {
@@ -75,14 +81,11 @@ public abstract class Insect extends GameObject implements Movable, PickupVisito
     }
 
 
-    public void hurt(int damage) {
-    }
-
-    public void hurt() {
-        hurt(1);
+    public void hurt(int damage) { this.lifePoints = this.lifePoints - damage;
     }
 
     public Direction getDirection() {
         return direction;
     }
+
 }

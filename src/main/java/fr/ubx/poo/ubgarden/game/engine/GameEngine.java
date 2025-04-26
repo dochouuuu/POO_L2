@@ -170,6 +170,39 @@ import java.util.*;
 
      private void checkCollision() {
         // Check a collision between the gardener and a wasp or an hornet
+         wasps.forEach(wasp -> {
+             if (gardener.getPosition().equals(wasp.getPosition())) {
+                 if (gardener.getInsecticideCount() >= 1){
+                     gardener.useInsecticide(1);
+                     wasp.hurt(1);
+                 } else {
+                     gardener.hurt(20);
+                     wasp.hurt(1);
+                 }
+
+                 if (wasp.getLifePoints() == 0) {
+                     wasp.remove();
+                     cleanupSprites();
+                 }
+             }
+         });
+
+         hornets.forEach(hornet -> {
+             if (game.getGardener().getPosition().equals(hornet.getPosition())) {
+                 if (gardener.getInsecticideCount() >= 2){
+                     gardener.useInsecticide(2);
+                     hornet.hurt(2);
+                 } else {
+                     gardener.hurt(30);
+                     hornet.hurt(1);
+                 }
+
+                 if (hornet.getLifePoints() == 0) {
+                     hornet.remove();
+                     cleanupSprites();
+                 }
+             }
+         });
     }
 
     private void processInput() {
@@ -226,7 +259,7 @@ import java.util.*;
      private void update(long now) {
          game.world().getGrid().values().forEach(decor -> {
              decor.update(now);
-
+             checkCollision();
              if (decor instanceof WaspNest) {
                  WaspNest waspNest = (WaspNest) decor;
                  Wasp wasp = waspNest.spawnWasp(now, game); // Génère une guêpe si le timer est fini
@@ -253,7 +286,10 @@ import java.util.*;
          // Mise à jour des insectes et du jardinier
          wasps.forEach(wasp -> wasp.update(now));
          hornets.forEach(hornet -> hornet.update(now));
+         //checkCollision();
+         //cleanupSprites();
          gardener.update(now);
+
 
          // Vérification des conditions de fin de jeu
          if (gardener.getEnergy() < 0) {
