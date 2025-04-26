@@ -8,7 +8,7 @@ import fr.ubx.poo.ubgarden.game.*;
 import fr.ubx.poo.ubgarden.game.go.bonus.Bonus;
 import fr.ubx.poo.ubgarden.game.go.bonus.Insecticide;
 import fr.ubx.poo.ubgarden.game.go.decor.*;
-import fr.ubx.poo.ubgarden.game.go.decor.ground.Grass;
+import fr.ubx.poo.ubgarden.game.go.decor.ground.*;
 import fr.ubx.poo.ubgarden.game.go.personage.*;
 import fr.ubx.poo.ubgarden.game.view.*;
 import javafx.animation.AnimationTimer;
@@ -243,15 +243,15 @@ import java.util.*;
      private void spawnInsecticide(int quantity) {
          for (int i = 0; i < quantity; i++) {
              Position insecticidePosition = Position.randomPos(game, new Position(game.world().currentLevel(), 0, 0), game.world().getGrid().width()); // Générer une position aléatoire dans toute la carte
-             while (game.world().getGrid().get(insecticidePosition) instanceof Tree || game.world().getGrid().get(insecticidePosition).getBonus() != null) {
-                 insecticidePosition = Position.randomPos(game, new Position(game.world().currentLevel(), 0, 0), game.world().getGrid().width()); // Retente si c'est un arbre ou un bonus
+             Decor decor = game.world().getGrid().get(insecticidePosition);
+
+             while (!(decor instanceof Ground) || decor.getBonus() != null){
+                 insecticidePosition = Position.randomPos(game, new Position(game.world().currentLevel(), 0, 0), game.world().getGrid().width());
+                 decor = game.world().getGrid().get(insecticidePosition);
              }
 
-             // Ajout d'un insecticide sur le décor Grass
-             Decor grass = new Grass(insecticidePosition);
-             Insecticide insecticide = new Insecticide(insecticidePosition, grass);
-             grass.setBonus(insecticide);
-             game.world().getGrid().put(insecticidePosition, grass);
+             Insecticide insecticide = new Insecticide(insecticidePosition, decor);
+             decor.setBonus(insecticide);
              sprites.add(SpriteFactory.create(layer, insecticide));
          }
      }
