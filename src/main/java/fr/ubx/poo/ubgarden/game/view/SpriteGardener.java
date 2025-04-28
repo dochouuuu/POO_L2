@@ -6,7 +6,6 @@ package fr.ubx.poo.ubgarden.game.view;
 
 import fr.ubx.poo.ubgarden.game.Direction;
 import fr.ubx.poo.ubgarden.game.go.personage.Gardener;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 

@@ -5,7 +5,6 @@
 package fr.ubx.poo.ubgarden.game.engine;
 
 import fr.ubx.poo.ubgarden.game.*;
-import fr.ubx.poo.ubgarden.game.go.bonus.Bonus;
 import fr.ubx.poo.ubgarden.game.go.bonus.Insecticide;
 import fr.ubx.poo.ubgarden.game.go.decor.*;
 import fr.ubx.poo.ubgarden.game.go.decor.ground.*;

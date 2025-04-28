@@ -1,9 +1,6 @@
 package fr.ubx.poo.ubgarden.game.launcher;
 
 import fr.ubx.poo.ubgarden.game.*;
-import fr.ubx.poo.ubgarden.game.go.decor.Decor;
-import fr.ubx.poo.ubgarden.game.go.decor.Hedgehog;
-
 
 import java.io.File;
 import java.io.FileInputStream;

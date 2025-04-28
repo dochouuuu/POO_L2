@@ -1,7 +1,5 @@
 package fr.ubx.poo.ubgarden.game;
 
-import fr.ubx.poo.ubgarden.game.go.decor.Decor;
-
 import java.util.HashMap;
 public class World {
     private final java.util.Map<Integer, Map> grids = new HashMap<>();
@@ -36,5 +34,4 @@ public class World {
     public int maxLevel() {
         return levels;
     }
-
 }

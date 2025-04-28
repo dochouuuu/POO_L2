@@ -17,5 +17,4 @@ public interface Map {
     boolean inside(Position nextPos);
 
     void put(Position position, Decor decor);
-
 }

@@ -93,5 +93,4 @@ public abstract class Insect extends GameObject implements Movable, PickupVisito
     public Direction getDirection() {
         return direction;
     }
-
 }

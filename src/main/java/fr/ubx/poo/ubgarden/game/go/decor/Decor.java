@@ -6,9 +6,7 @@ import fr.ubx.poo.ubgarden.game.go.Pickupable;
 import fr.ubx.poo.ubgarden.game.go.Walkable;
 import fr.ubx.poo.ubgarden.game.go.bonus.Bonus;
 import fr.ubx.poo.ubgarden.game.go.personage.Gardener;
-import fr.ubx.poo.ubgarden.game.go.personage.Hornet;
 import fr.ubx.poo.ubgarden.game.go.personage.Insect;
-import fr.ubx.poo.ubgarden.game.go.personage.Wasp;
 
 public abstract class Decor extends GameObject implements Walkable, Pickupable {
 
@@ -48,5 +46,4 @@ public abstract class Decor extends GameObject implements Walkable, Pickupable {
     public int energyConsumptionWalk() {
         return 1;
     }
-
 }

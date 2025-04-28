@@ -44,5 +44,4 @@ public enum MapEntity {
     public String toString() {
         return Character.toString(code);
     }
-
 }

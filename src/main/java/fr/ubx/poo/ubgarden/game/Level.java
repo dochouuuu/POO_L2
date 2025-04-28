@@ -127,5 +127,4 @@ public class Level implements Map {
     public void put(Position position, Decor decor) {
         decors.put(position, decor);
     }
-
 }

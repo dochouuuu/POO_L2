@@ -23,5 +23,4 @@ public abstract class Bonus extends GameObject implements Pickupable {
         super.remove();
         decor.setBonus(null);
     }
-
 }

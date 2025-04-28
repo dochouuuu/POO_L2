@@ -1,8 +1,5 @@
 package fr.ubx.poo.ubgarden.game.launcher;
 
-
-import fr.ubx.poo.ubgarden.game.go.decor.*;
-
 import static fr.ubx.poo.ubgarden.game.launcher.MapEntity.*;
 
 public class MapLevelDefaultStart extends MapLevel {

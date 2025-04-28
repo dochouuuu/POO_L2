@@ -20,5 +20,4 @@ public class Grass extends Ground {
             bonus.pickUpBy(gardener);
         }
     }
-
 }

@@ -92,5 +92,4 @@ public class GameLauncherView extends BorderPane {
         stage.hide();
         stage.show();
     }
-
 }

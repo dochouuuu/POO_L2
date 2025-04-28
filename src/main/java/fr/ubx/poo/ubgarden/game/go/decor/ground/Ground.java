@@ -11,7 +11,6 @@ public abstract class Ground extends Decor {
     public Ground(Position position) {
         super(position);
     }
-
 }
 
 

@@ -29,7 +29,7 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
     private boolean moveRequested = false;
     private int diseaseLevel = 1;
     private int insecticideCount = 0;
-    private List<Timer> poisonTimers = new ArrayList<>();
+    private final List<Timer> poisonTimers = new ArrayList<>();
     private int carrots = 0;
     private boolean justArrived = false;
 
@@ -118,23 +118,29 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
         if (moveRequested) {
             if (canMove(direction)) {
                 move(direction);
-                lastMoveTime = now;
+                lastMoveTime = now; // Met à jour le temps du dernier mouvement
             }
         }
+
         Decor decor = game.world().getGrid().get(this.getPosition());
+
+        // Vérifie s'il est sur une porte ouverte et qu'il n'est pas juste arrivé
         if (!this.isJustArrived() && decor instanceof Door door && door.getIsOpen()) {
             int currentLevel = game.world().currentLevel();
             int targetLevel = door.isToNextLevel() ? currentLevel + 1 : currentLevel - 1;
 
             System.out.println("Passage au niveau " + targetLevel + " via une porte " + (door.isToNextLevel() ? "vers le niveau suivant" : "vers le niveau précédent"));
 
-            game.requestSwitchLevel(targetLevel);
+            game.requestSwitchLevel(targetLevel); // Demande à changer de niveau
         }
+
         else {
-            long inactive = (now - lastMoveTime) / 1_000_000;
+            long inactive = (now - lastMoveTime) / 1_000_000; // Calcule le temps d'inactivité
+
+            // Si le joueur est inactif assez longtemps
             if (inactive >= game.configuration().energyRecoverDuration()) {
-                if (energy < game.configuration().gardenerEnergy()) {
-                    energy++;
+                if (energy < game.configuration().gardenerEnergy()) { // Et que son énergie n'est pas au maximum
+                    energy++; // Récupère un point d'énergie
                     lastMoveTime = now;
                 }
             }
@@ -175,6 +181,7 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
     public boolean isJustArrived() {
         return justArrived;
     }
+
     public void setJustArrived(boolean justArrived) {
         this.justArrived = justArrived;
     }
