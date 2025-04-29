@@ -1,5 +1,8 @@
-DO Tran Minh Chau 
+DO Tran Minh Chau
+
 DRION Léa
+
+
 A2
 
 Ce document présente les principales modifications architecturales apportées au projet POO 2025.
