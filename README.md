@@ -3,9 +3,9 @@ UBGarden is a small **2D Java game** developed as part of a **second-year (L2) O
 
 ## Author
 
-Tran Minh Chau DO
+- Tran Minh Chau DO
 
-Léa DRION
+- Léa DRION
 
 ### Game Overview
 - The world is a grid of cells (grass, dirt, carrots, trees, flower bushes…).
