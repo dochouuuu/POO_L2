@@ -1,5 +1,11 @@
 # UBGarden – 2D Java Game
-UBGarden is a small 2D Java game where you play a gardener trying to rescue a lost hedgehog while avoiding bees and wasps.   Move through several garden levels, collect items, open doors, and survive long enough to reach the hedgehog.
+UBGarden is a small **2D Java game** developed as part of a **second-year (L2) Object-Oriented Programming (OOP) course in Java**. The player controls a gardener whose goal is to rescue a lost hedgehog while avoiding enemies such as bees and wasps. The game features multiple garden levels where the player must explore the environment, collect items, unlock doors, and survive hazards in order to reach the hedgehog and complete the game.
+
+## Author
+
+Tran Minh Chau DO
+
+Léa DRION
 
 ### Game Overview
 - The world is a grid of cells (grass, dirt, carrots, trees, flower bushes…).
